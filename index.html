@@ -1,0 +1,2837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GrantsBolivia Pro</title>
+<style>
+:root{--primary:#1a3a5c;--accent:#e8a020;--accent2:#2e7d32;--bg:#f4f6f9;--card:#fff;--text:#1a1a2e;--muted:#6b7280;--border:#e2e8f0;--danger:#dc2626;--info:#0284c7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.topbar{background:var(--primary);color:#fff;padding:9px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.topbar .logo{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:700}
+.topbar .logo span{color:var(--accent)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:.8rem;transition:.2s}
+.lang-btn:hover{background:var(--accent);border-color:var(--accent)}
+.alert-bell{position:relative;cursor:pointer;font-size:1.3rem}
+.alert-count{position:absolute;top:-5px;right:-5px;background:var(--danger);color:#fff;border-radius:50%;width:18px;height:18px;font-size:.65rem;display:flex;align-items:center;justify-content:center}
+.layout{display:flex;min-height:calc(100vh - 52px)}
+.sidebar{width:210px;background:var(--primary);padding:8px 0;flex-shrink:0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.sidebar a{display:flex;align-items:center;gap:8px;padding:9px 16px;color:rgba(255,255,255,.75);text-decoration:none;font-size:.83rem;transition:.2s;cursor:pointer}
+.sidebar a:hover,.sidebar a.active{background:rgba(255,255,255,.12);color:#fff;border-left:3px solid var(--accent)}
+.sidebar a .ico{font-size:.95rem;width:18px;text-align:center}
+.sidebar-section{padding:6px 16px 3px;font-size:.65rem;text-transform:uppercase;color:rgba(255,255,255,.4);letter-spacing:1px;margin-top:4px}
+.main{flex:1;padding:20px;overflow-y:auto;overflow-x:hidden}
+.card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:20px}
+.card-title{font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.view{display:none}.view.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:16px;margin-bottom:20px}
+.stat-card{background:var(--card);border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08);border-top:4px solid var(--accent)}
+.stat-num{font-size:2rem;font-weight:700;color:var(--primary)}
+.stat-label{font-size:.78rem;color:var(--muted);margin-top:4px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid.cols3{grid-template-columns:1fr 1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+label{font-size:.8rem;font-weight:600;color:var(--muted)}
+input,select,textarea{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:inherit;transition:.2s;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+textarea{resize:vertical;min-height:80px}
+.btn{padding:9px 18px;border-radius:8px;border:none;cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:#0f2540}
+.btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{background:#c8881a}
+.btn-green{background:var(--accent2);color:#fff}.btn-green:hover{background:#1b5e20}
+.btn-outline{background:transparent;border:1.5px solid var(--primary);color:var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-sm{padding:5px 12px;font-size:.78rem}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600;gap:4px}
+.tag-blue{background:#dbeafe;color:#1d4ed8}.tag-green{background:#dcfce7;color:#166534}.tag-orange{background:#fff7ed;color:#c2410c}.tag-red{background:#fee2e2;color:#991b1b}.tag-purple{background:#f3e8ff;color:#7e22ce}.tag-gray{background:#f1f5f9;color:#475569}
+.grant-card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:5px solid var(--accent);margin-bottom:14px;transition:.2s}
+.grant-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12);transform:translateY(-1px)}
+.grant-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.grant-title{font-weight:700;font-size:.95rem;color:var(--primary);flex:1}
+.grant-amount{font-size:1.1rem;font-weight:700;color:var(--accent2);white-space:nowrap}
+.grant-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.grant-desc{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.grant-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.deadline-chip{font-size:.78rem;padding:3px 10px;border-radius:20px;font-weight:600}
+.deadline-urgent{background:#fee2e2;color:#991b1b}.deadline-soon{background:#fef9c3;color:#854d0e}.deadline-ok{background:#dcfce7;color:#166534}
+.rank-item{background:var(--card);border-radius:12px;padding:16px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 1px 4px rgba(0,0,0,.08);border:1.5px solid var(--border);transition:.2s}
+.rank-item:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.rank-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0}
+.rank-1{background:#ffd700;color:#7a5700}.rank-2{background:#e0e0e0;color:#424242}.rank-3{background:#cd7f32;color:#fff}.rank-other{background:var(--primary);color:#fff}
+.rank-body{flex:1}
+.rank-title{font-weight:700;font-size:.92rem;color:var(--primary);margin-bottom:4px}
+.rank-score-bar{height:6px;background:#e2e8f0;border-radius:3px;margin:6px 0}
+.rank-score-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.brecha-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.brecha-label{font-size:.8rem;width:150px;color:var(--text);flex-shrink:0}
+.brecha-bar{flex:1;height:10px;background:#e2e8f0;border-radius:5px;overflow:hidden}
+.brecha-fill{height:100%;border-radius:5px}
+.brecha-pct{font-size:.78rem;width:35px;text-align:right;font-weight:600}
+.socio-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);border:1.5px solid var(--border);margin-bottom:12px}
+.socio-avatar{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0}
+.search-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.search-bar input{flex:1;min-width:200px}
+.filter-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pill{padding:5px 14px;border-radius:20px;font-size:.78rem;cursor:pointer;border:1.5px solid var(--border);background:#fff;transition:.2s;font-weight:600;color:var(--muted)}
+.pill.active,.pill:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.alert-item{display:flex;gap:12px;padding:12px 14px;border-radius:10px;background:var(--card);border-left:4px solid var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:10px;align-items:center}
+.alert-icon{font-size:1.3rem}
+.alert-body{flex:1}
+.alert-title{font-weight:600;font-size:.88rem}
+.alert-sub{font-size:.78rem;color:var(--muted)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:720px;width:90%;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.modal-title{font-size:1.1rem;font-weight:700;color:var(--primary)}
+.modal-close{cursor:pointer;font-size:1.4rem;color:var(--muted);background:none;border:none}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:8px 14px;cursor:pointer;font-size:.83rem;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s}
+.tab.active{color:var(--primary);border-color:var(--primary)}
+.tab-content{display:none}.tab-content.active{display:block}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.section-title{font-size:1.15rem;font-weight:700;color:var(--primary)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.score-badge{width:52px;height:52px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;flex-shrink:0}
+.score-high{background:var(--accent2)}.score-mid{background:var(--accent)}.score-low{background:#ef4444}
+[data-tip]{position:relative;cursor:help}
+[data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:5px 10px;border-radius:6px;font-size:.73rem;white-space:nowrap;z-index:50;pointer-events:none}
+@media(max-width:700px){.form-grid{grid-template-columns:1fr}.sidebar{width:56px}.sidebar a span{display:none}.sidebar-section{display:none}}
+/* PARTNER CARD */
+.partner-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);border:1.5px solid var(--border);margin-bottom:12px;display:flex;gap:14px;align-items:flex-start}
+.partner-logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--primary),#2a5f8f);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.partner-body{flex:1}
+.partner-name{font-weight:700;font-size:.9rem;color:var(--primary);margin-bottom:3px}
+.partner-meta{font-size:.78rem;color:var(--muted);margin-bottom:5px}
+.match-score{display:inline-flex;align-items:center;gap:4px;background:#dcfce7;color:#166534;padding:2px 9px;border-radius:12px;font-size:.75rem;font-weight:700}
+/* ADMIN EXPANDED */
+.admin-consultant-card{background:#f8fafc;border-radius:12px;padding:16px;margin-bottom:14px;border:1.5px solid #e2e8f0}
+.admin-consultant-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;cursor:pointer}
+.admin-consultant-name{font-weight:700;color:#1a3a5c;font-size:.95rem}
+</style>
+<style>
+.nav-item{padding:12px 20px;color:#94a3b8;cursor:pointer;font-size:.9rem;border-left:3px solid transparent;transition:all .15s}
+.nav-item:hover,.nav-item.active{background:#1e3a5f;color:#f1f5f9;border-left-color:#3b82f6}
+.card{background:#1e293b;border-radius:12px;padding:20px}
+.card-title{color:#f59e0b;font-size:1rem;font-weight:700;margin-bottom:14px}
+.field-label{display:block;color:#94a3b8;font-size:.8rem;margin-bottom:4px;margin-top:10px}
+.field-input{width:100%;background:#0f172a;border:1px solid #334155;color:#f1f5f9;padding:8px 12px;border-radius:8px;font-size:.9rem;box-sizing:border-box}
+.field-input:focus{outline:none;border-color:#3b82f6}
+textarea.field-input{resize:vertical}
+select.field-input option{background:#0f172a}
+.btn-primary{background:#2563eb;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:600}
+.btn-primary:hover{background:#1d4ed8}
+.btn-secondary{background:#334155;color:#f1f5f9;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.85rem}
+.btn-secondary:hover{background:#475569}
+.view-section{animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.admin-tab-btn{padding:10px 18px;background:none;border:none;color:#94a3b8;cursor:pointer;font-size:.9rem;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.admin-tab-btn.active{color:#f59e0b;border-bottom-color:#f59e0b}
+@media(max-width:768px){
+  #sidebar{transform:translateX(-220px)!important}
+  #mainContent{margin-left:0!important}
+}
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<style>
+#gateContainer{position:fixed;inset:0;background:linear-gradient(135deg,#0f1e2e 0%,#1a3a5c 60%,#0f2540 100%);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'Segoe UI',sans-serif}
+#gate.hidden{display:none}
+.gate-box{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.gate-logo{text-align:center;margin-bottom:24px}
+.gate-logo .gl-icon{font-size:2.4rem;display:block;margin-bottom:8px}
+.gate-logo .gl-title{font-size:1.3rem;font-weight:800;color:#1a3a5c}
+.gate-logo .gl-title span{color:#e8a020}
+.gate-logo .gl-sub{font-size:.78rem;color:#6b7280;margin-top:2px}
+.gate-tabs{display:flex;border-bottom:2px solid #e2e8f0;margin-bottom:24px}
+.gate-tab{flex:1;text-align:center;padding:10px;cursor:pointer;font-size:.85rem;font-weight:700;color:#6b7280;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.2s}
+.gate-tab.active{color:#1a3a5c;border-color:#e8a020}
+.gate-form{display:none}.gate-form.active{display:block}
+.gate-group{margin-bottom:14px}
+.gate-group label{display:block;font-size:.78rem;font-weight:700;color:#374151;margin-bottom:4px}
+.gate-group input{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.88rem;transition:.2s;outline:none}
+.gate-group input:focus{border-color:#1a3a5c}
+.gate-btn{width:100%;padding:12px;background:#1a3a5c;color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;transition:.2s;margin-top:4px}
+.gate-btn:hover{background:#0f2540}
+.gate-btn.accent{background:#e8a020}.gate-btn.accent:hover{background:#c8881a}
+.gate-msg{font-size:.8rem;text-align:center;margin-top:10px;min-height:18px;font-weight:600}
+.gate-msg.error{color:#dc2626}.gate-msg.ok{color:#2e7d32}
+.gate-divider{text-align:center;font-size:.75rem;color:#9ca3af;margin:14px 0;position:relative}
+.gate-divider::before,.gate-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:#e2e8f0}
+.gate-divider::before{left:0}.gate-divider::after{right:0}
+.gate-footer{text-align:center;font-size:.72rem;color:#9ca3af;margin-top:16px}
+.badge-beta{display:inline-block;background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:700;margin-top:6px}
+#adminPanel{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;display:none;align-items:flex-start;justify-content:center;padding-top:40px;overflow-y:auto}
+#adminPanel.open{display:flex}
+.admin-box{background:#fff;border-radius:16px;padding:28px;max-width:900px;width:95%;max-height:90vh;overflow-y:auto;margin-bottom:40px}
+.admin-title{font-size:1.1rem;font-weight:800;color:#1a3a5c;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.admin-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.admin-table th{background:#1a3a5c;color:#fff;padding:8px 12px;text-align:left}
+.admin-table td{padding:8px 12px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.admin-table tr:hover td{background:#f4f6f9}
+.admin-badge{padding:3px 8px;border-radius:12px;font-size:.7rem;font-weight:700}
+.ab-admin{background:#dbeafe;color:#1d4ed8}.ab-user{background:#dcfce7;color:#166534}
+</style>
+
+<div id="gateContainer">
+  <div class="gate-box">
+    <div class="gate-logo">
+      <span class="gl-icon">🌐</span>
+      <div class="gl-title"><span>Grants</span>Bolivia<span style="color:#6b7280;font-weight:300">Pro</span></div>
+      <div class="gl-sub">Consultoría de Fondos Internacionales</div>
+      <span class="badge-beta">🔒 Acceso Restringido</span>
+    </div>
+    <div class="gate-tabs">
+      <div class="gate-tab active" onclick="switchGateTab('login')">Iniciar sesión</div>
+      <div class="gate-tab" onclick="switchGateTab('register')">Registrarse</div>
+    </div>
+    <div class="gate-form active" id="gf-login">
+      <div class="gate-group"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@correo.com" autocomplete="email"></div>
+      <div class="gate-group"><label>Contraseña</label><input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="gate-btn" onclick="doLogin()">Entrar →</button>
+      <div class="gate-msg" id="loginMsg"></div>
+      <div class="gate-divider">o</div>
+      <div style="text-align:center;font-size:.78rem;color:#6b7280">¿Primera vez? <a href="#" onclick="switchGateTab('register');return false" style="color:#1a3a5c;font-weight:700">Regístrate aquí</a></div>
+    </div>
+    <div class="gate-form" id="gf-register">
+      <div class="gate-group"><label>Nombre completo</label><input type="text" id="regNombre" placeholder="Tu nombre completo"></div>
+      <div class="gate-group"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com" autocomplete="email"></div>
+      <div class="gate-group"><label>Organización / Empresa</label><input type="text" id="regOrg" placeholder="Nombre de tu organización"></div>
+      <div class="gate-group"><label>Código de acceso</label><input type="password" id="regCode" placeholder="Código proporcionado por admin" onkeydown="if(event.key==='Enter')doRegister()"></div>
+      <button class="gate-btn accent" onclick="doRegister()">Crear cuenta →</button>
+      <div class="gate-msg" id="registerMsg"></div>
+      <div class="gate-divider">o</div>
+      <div style="text-align:center;font-size:.78rem;color:#6b7280">¿Ya tienes cuenta? <a href="#" onclick="switchGateTab('login');return false" style="color:#1a3a5c;font-weight:700">Inicia sesión</a></div>
+    </div>
+    <div class="gate-footer">GrantsBolivia Pro · Bolivia<br><span style="color:#dc2626">⚠️</span> Solo usuarios autorizados</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+
+
+<div id="adminPanel" style="display:none;position:fixed;inset:0;background:#0f172a;z-index:200;overflow-y:auto">
+  <div style="max-width:1100px;margin:0 auto;padding:28px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+      <div>
+        <h1 style="color:#f59e0b;font-size:1.5rem;font-weight:800;margin:0">🛡️ Panel de Administración — GrantsBolivia Pro</h1>
+        <p id="adminUserLabel" style="color:#94a3b8;font-size:.85rem;margin:4px 0 0">Admin</p>
+      </div>
+      <button onclick="doLogout()" style="background:#dc2626;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-weight:600">Cerrar sesión</button>
+    </div>
+    <div style="display:flex;gap:0;border-bottom:1px solid #1e3a5f;margin-bottom:20px;flex-wrap:wrap">
+      <button class="admin-tab-btn active" data-tab="consultores" onclick="renderAdminTab('consultores')">👥 Consultores</button>
+      <button class="admin-tab-btn" data-tab="perfiles" onclick="renderAdminTab('perfiles')">📊 Perfiles & Análisis</button>
+      <button class="admin-tab-btn" data-tab="grants" onclick="renderAdminTab('grants')">📋 Gestión de Grants</button>
+      <button class="admin-tab-btn" data-tab="importar" onclick="renderAdminTab('importar')">📥 Importar Perfil</button>
+      <button class="admin-tab-btn" data-tab="config" onclick="renderAdminTab('config')">⚙️ Configuración</button>
+    </div>
+    <div id="adminGrantsContent" style="display:none"></div>
+    <div id="adminTabContent"></div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     MAIN HTML BODY
+     ============================================================ -->
+<div id="mainApp" style="display:none">
+  <!-- TOPBAR -->
+  <div id="topbar" style="position:fixed;top:0;left:0;right:0;height:56px;background:#1e3a5f;display:flex;align-items:center;padding:0 20px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)">
+    <button id="menuToggle" onclick="toggleSidebar()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;margin-right:16px">☰</button>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/40px-Flag_of_Bolivia.svg.png" style="height:24px;margin-right:10px" onerror="this.style.display='none'">
+    <span style="color:#fff;font-weight:700;font-size:1.1rem;letter-spacing:.5px">GrantsBolivia <span style="color:#f59e0b">Pro</span></span>
+    <div style="flex:1"></div>
+    <span id="topbarUser" style="color:#93c5fd;font-size:.85rem;margin-right:16px"></span>
+    <button onclick="doLogout()" style="background:#dc2626;color:#fff;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85rem">Salir</button>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar" style="position:fixed;top:56px;left:0;width:220px;height:calc(100vh - 56px);background:#0f2744;overflow-y:auto;z-index:90;transition:transform .25s">
+    <nav style="padding:12px 0">
+      <div class="nav-item" onclick="showView('dashboard')">🏠 Dashboard</div>
+      <div class="nav-item" onclick="showView('perfil')">👤 Mi Perfil & CV</div>
+      <div class="nav-item" onclick="showView('buscar')">🔍 Buscar Grants</div>
+      <div class="nav-item" onclick="showView('mis-grants')">⭐ Mis Grants</div>
+      <div class="nav-item" onclick="showView('ranking')">📊 Ranking Match</div>
+      <div class="nav-item" onclick="showView('socios')">🤝 Socios Bolivia</div>
+      <div class="nav-item" onclick="showView('exportar')">📄 Exportar Word</div>
+      <div class="nav-item" onclick="showView('alertas')">🔔 Alertas</div>
+      <div id="navExportPerfil" class="nav-item" onclick="showView('exportperfil')" style="border-top:1px solid #1e3a5f;margin-top:8px">📤 Exportar Perfil</div>
+    </nav>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div id="mainContent" style="margin-left:220px;margin-top:56px;padding:28px;min-height:calc(100vh - 56px);background:#0f172a;transition:margin .25s">
+
+    <!-- VIEW: DASHBOARD -->
+    <div id="view-dashboard" class="view-section">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">🏠 Dashboard</h2>
+      <div id="dashStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px"></div>
+      <div id="dashGrants" style="margin-bottom:28px"></div>
+      <div id="dashPartners"></div>
+    </div>
+
+    <!-- VIEW: PERFIL -->
+    <div id="view-perfil" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">👤 Mi Perfil & CV</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div>
+          <div class="card">
+            <h3 class="card-title">Datos Básicos</h3>
+            <label class="field-label">Nombre completo</label>
+            <input id="pNombre" class="field-input" placeholder="Nombre completo">
+            <label class="field-label">Tipo de entidad</label>
+            <select id="pTipo" class="field-input">
+              <option value="">Seleccionar...</option>
+              <option>ONG</option><option>Fundación</option><option>Empresa</option>
+              <option>Universidad</option><option>Institución Pública</option><option>Consultor Individual</option>
+            </select>
+            <label class="field-label">Años de experiencia</label>
+            <input id="pAnios" type="number" class="field-input" placeholder="Ej: 5" min="0">
+            <label class="field-label">Inglés</label>
+            <select id="pEnglish" class="field-input">
+              <option value="">Seleccionar...</option>
+              <option>Básico (A1-A2)</option><option>Intermedio (B1-B2)</option>
+              <option>Avanzado (C1-C2)</option><option>Nativo</option>
+            </select>
+            <label class="field-label">Monto máximo gestionado (USD)</label>
+            <input id="pMonto" class="field-input" placeholder="Ej: 150000">
+            <label class="field-label">Donantes previos</label>
+            <input id="pDonantes" class="field-input" placeholder="USAID, GIZ, Embajada...">
+            <label class="field-label">Ubicación (Depto. Bolivia)</label>
+            <select id="pUbicacion" class="field-input">
+              <option value="">Seleccionar...</option>
+              <option>La Paz</option><option>Cochabamba</option><option>Santa Cruz</option>
+              <option>Oruro</option><option>Potosí</option><option>Sucre</option>
+              <option>Tarija</option><option>Beni</option><option>Pando</option>
+            </select>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <h3 class="card-title">Áreas Temáticas</h3>
+            <div id="areasCheck" style="display:grid;grid-template-columns:1fr 1fr;gap:6px"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <h3 class="card-title">Subir CV (texto)</h3>
+            <textarea id="pCV" class="field-input" rows="10" placeholder="Pega aquí tu CV completo..."></textarea>
+            <button onclick="analizarCV()" class="btn-primary" style="width:100%;margin-top:10px">🤖 Analizar CV con IA</button>
+            <div id="cvAnalisisResult" style="margin-top:12px"></div>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <h3 class="card-title">Capacidades</h3>
+            <div id="capCheck" style="display:grid;grid-template-columns:1fr 1fr;gap:6px"></div>
+          </div>
+          <div style="margin-top:16px">
+            <button onclick="guardarPerfil()" class="btn-primary" style="width:100%">💾 Guardar Perfil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: BUSCAR -->
+    <div id="view-buscar" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">🔍 Buscar Grants Internacionales</h2>
+      <div class="card" style="margin-bottom:20px">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+          <div style="flex:1;min-width:180px">
+            <label class="field-label">Buscar</label>
+            <input id="searchQ" class="field-input" placeholder="Keyword..." oninput="filtrarGrants()">
+          </div>
+          <div>
+            <label class="field-label">Área</label>
+            <select id="searchArea" class="field-input" onchange="filtrarGrants()">
+              <option value="">Todas</option>
+              <option>Educación</option><option>Emprendimiento</option><option>Innovación</option>
+              <option>Derechos Humanos</option><option>Medio Ambiente</option><option>Género</option>
+              <option>Agua</option><option>Alimentos</option><option>Cultura</option><option>Salud</option>
+              <option>Múltiple</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Continente</label>
+            <select id="searchCont" class="field-input" onchange="filtrarGrants()">
+              <option value="">Todos</option>
+              <option>América del Norte</option><option>Europa</option><option>Asia</option>
+              <option>América Latina</option><option>Global/ONU</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Estado</label>
+            <select id="searchEstado" class="field-input" onchange="filtrarGrants()">
+              <option value="">Todos</option>
+              <option>Abierto</option><option>Próximo</option>
+            </select>
+          </div>
+          <button onclick="filtrarGrants()" class="btn-primary">Buscar</button>
+        </div>
+      </div>
+      <div id="grantsList"></div>
+    </div>
+
+    <!-- VIEW: MIS GRANTS -->
+    <div id="view-mis-grants" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">⭐ Mis Grants Guardados</h2>
+      <div id="misGrantsList"></div>
+    </div>
+
+    <!-- VIEW: RANKING -->
+    <div id="view-ranking" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">📊 Ranking de Match con Mi Perfil</h2>
+      <p style="color:#94a3b8;margin-bottom:16px">Grants ordenados por compatibilidad con tu perfil. Completa tu perfil para mejor precisión.</p>
+      <div id="rankingList"></div>
+    </div>
+
+    <!-- VIEW: SOCIOS -->
+    <div id="view-socios" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">🤝 Socios Estratégicos en Bolivia</h2>
+      <div class="card" style="margin-bottom:20px">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <select id="sociosArea" class="field-input" style="flex:1" onchange="filtrarSocios()">
+            <option value="">Todas las áreas</option>
+            <option>Educación</option><option>Medio Ambiente</option><option>Salud</option>
+            <option>Género</option><option>Derechos Humanos</option><option>Agua</option>
+            <option>Alimentos</option><option>Cultura</option><option>Emprendimiento</option>
+          </select>
+          <select id="sociosTipo" class="field-input" style="flex:1" onchange="filtrarSocios()">
+            <option value="">Todos los tipos</option>
+            <option>ONG</option><option>Fundación</option><option>Universidad</option><option>Red</option>
+          </select>
+        </div>
+      </div>
+      <div id="sociosList"></div>
+    </div>
+
+    <!-- VIEW: EXPORTAR -->
+    <div id="view-exportar" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">📄 Generar Documento Word de Postulación</h2>
+      <div class="card">
+        <label class="field-label">Seleccionar Grant</label>
+        <select id="exportGrantSel" class="field-input" style="margin-bottom:16px"></select>
+        <label class="field-label">Descripción del Proyecto</label>
+        <textarea id="exportDesc" class="field-input" rows="5" placeholder="Describe brevemente tu proyecto..."></textarea>
+        <label class="field-label" style="margin-top:12px">Objetivo General</label>
+        <input id="exportObjetivo" class="field-input" placeholder="Objetivo general del proyecto">
+        <label class="field-label" style="margin-top:12px">Beneficiarios</label>
+        <input id="exportBenef" class="field-input" placeholder="Ej: 500 familias rurales en La Paz">
+        <label class="field-label" style="margin-top:12px">Monto solicitado (USD)</label>
+        <input id="exportMonto" class="field-input" placeholder="Ej: 75000">
+        <button onclick="generarWordPostulacion()" class="btn-primary" style="width:100%;margin-top:16px;font-size:1rem;padding:12px">📝 Generar Documento Word</button>
+      </div>
+    </div>
+
+    <!-- VIEW: ALERTAS -->
+    <div id="view-alertas" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">🔔 Alertas de Deadlines</h2>
+      <div id="alertasList"></div>
+    </div>
+
+    <!-- VIEW: EXPORTAR PERFIL -->
+    <div id="view-exportperfil" class="view-section" style="display:none">
+      <h2 style="color:#f1f5f9;margin-bottom:20px">📤 Exportar Mi Perfil</h2>
+      <div class="card">
+        <p style="color:#94a3b8;margin-bottom:16px">Genera un código que la administradora puede importar para analizar tu perfil desde cualquier dispositivo.</p>
+        <button onclick="generarCodigoPerfil()" class="btn-primary">Generar Código de Perfil</button>
+        <textarea id="perfilCodigoOut" class="field-input" rows="8" style="margin-top:16px;font-family:monospace;font-size:.75rem" readonly placeholder="El código aparecerá aquí..."></textarea>
+        <button onclick="copiarCodigoPerfil()" class="btn-secondary" style="margin-top:8px">📋 Copiar Código</button>
+      </div>
+    </div>
+
+  </div><!-- /mainContent -->
+</div><!-- /mainApp -->
+
+
+
+<script>
+// ═══════════════ CONFIGURACIÓN DE ACCESO ═══════════════
+const ACCESS_CFG = {
+  adminEmail: 'mabelbecerra@upsa.edu.bo',
+  adminPass:  'GBPro2026!Mabel',
+  betaCode:   'ScaleUp2026',
+  guestPass:  'GrantsBolivia2026'
+};
+
+function getUsers(){
+  try{ return JSON.parse(localStorage.getItem('gbp_users')||'[]'); }catch(e){return [];}
+}
+function saveUsers(u){ localStorage.setItem('gbp_users', JSON.stringify(u)); }
+
+(function initAdmin(){
+  let users = getUsers();
+  if(!users.find(u=>u.email===ACCESS_CFG.adminEmail)){
+    users.unshift({nombre:'Mabel Becerra',email:ACCESS_CFG.adminEmail,org:'GrantsBolivia Pro',fecha:new Date().toISOString().slice(0,10),ultimoAcceso:new Date().toISOString().slice(0,10),rol:'admin'});
+    saveUsers(users);
+  }
+})();
+
+function switchGateTab(tab){
+  document.querySelectorAll('.gate-tab').forEach((t,i)=>{
+    t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register'));
+  });
+  document.getElementById('gf-login').classList.toggle('active',tab==='login');
+  document.getElementById('gf-register').classList.toggle('active',tab==='register');
+  document.getElementById('loginMsg').textContent='';
+  document.getElementById('registerMsg').textContent='';
+}
+
+function setMsg(id,text,type){
+  const el=document.getElementById(id);
+  el.textContent=text;
+  el.className='gate-msg '+type;
+}
+
+function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass=document.getElementById('loginPass').value;
+  if(!email||!pass){setMsg('loginMsg','Completa todos los campos','error');return;}
+  const adminPass=localStorage.getItem('gbp_adminPass')||ACCESS_CFG.adminPass;
+  var exp=new Date(); exp.setHours(exp.getHours()+8);
+  if(email===ACCESS_CFG.adminEmail.toLowerCase()&&pass===adminPass){
+    ACCESS_CFG.adminPass=adminPass;
+    updateLastAccess(email);
+    sessionStorage.setItem('gbp_session',JSON.stringify({email:email,rol:'admin',expires:exp.toISOString()}));
+    window.location.reload(); return;
+  }
+  const users=getUsers();
+  const user=users.find(u=>u.email.toLowerCase()===email);
+  if(user&&pass===ACCESS_CFG.guestPass){
+    updateLastAccess(email);
+    var rol=user.rol||'consultor';
+    sessionStorage.setItem('gbp_session',JSON.stringify({email:email,rol:rol,expires:exp.toISOString()}));
+    window.location.reload(); return;
+  }
+  setMsg('loginMsg','Email o contraseña incorrectos. Verifica tus datos.','error');
+}
+
+function updateLastAccess(email){
+  let users=getUsers();
+  const idx=users.findIndex(u=>u.email.toLowerCase()===email.toLowerCase());
+  if(idx>=0){ users[idx].ultimoAcceso=new Date().toISOString().slice(0,10); saveUsers(users); }
+}
+
+function doRegister(){
+  const nombre=document.getElementById('regNombre').value.trim();
+  const email=document.getElementById('regEmail').value.trim().toLowerCase();
+  const org=document.getElementById('regOrg').value.trim();
+  const code=document.getElementById('regCode').value.trim();
+  if(!nombre||!email||!org||!code){setMsg('registerMsg','Completa todos los campos','error');return;}
+  if(code!==ACCESS_CFG.betaCode){setMsg('registerMsg','Código de acceso incorrecto. Solicítalo a la administradora.','error');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setMsg('registerMsg','Email no válido','error');return;}
+  let users=getUsers();
+  if(users.find(u=>u.email.toLowerCase()===email)){setMsg('registerMsg','Este email ya está registrado. Inicia sesión.','error');return;}
+  users.push({nombre,email,org,fecha:new Date().toISOString().slice(0,10),ultimoAcceso:new Date().toISOString().slice(0,10),rol:'consultor'});
+  saveUsers(users);
+  // Save session BEFORE showing message so reload picks it up
+  var exp=new Date(); exp.setHours(exp.getHours()+8);
+  sessionStorage.setItem('gbp_session',JSON.stringify({email:email,rol:'consultor',expires:exp.toISOString()}));
+  setMsg('registerMsg','✅ Bienvenido/a '+nombre+'! Abriendo la aplicación...','ok');
+  setTimeout(function(){ window.location.reload(); },1200);
+}
+
+let currentUserEmail='';
+let currentUserRol='';
+
+function grantAccess(email,rol){
+  currentUserEmail=email;
+  currentUserRol=rol;
+  var exp=new Date();exp.setHours(exp.getHours()+8);
+  sessionStorage.setItem('gbp_session',JSON.stringify({email:email,rol:rol,expires:exp.toISOString()}));
+  // Hide gate unconditionally
+  var gate=document.getElementById('gateContainer');
+  if(gate) gate.style.display='none';
+  // Show app
+  if(typeof initializeUserSession==='function'){
+    try{ initializeUserSession(email,rol); }
+    catch(e){
+      console.error('Error en initializeUserSession:',e);
+      var app=document.getElementById('mainApp');
+      if(app) app.style.display='block';
+    }
+  } else {
+    // Script2 not ready yet — initOnLoad will handle on next tick
+    setTimeout(function(){
+      if(typeof initializeUserSession==='function') initializeUserSession(email,rol);
+    },300);
+  }
+}
+
+function checkSession(){
+  try{
+    const s=JSON.parse(sessionStorage.getItem('gbp_session')||'null');
+    if(s&&s.expires&&new Date(s.expires)>new Date()){ grantAccess(s.email,s.rol); return true; }
+  }catch(e){}
+  return false;
+}
+
+
+function openAdminPanel(){
+  const users=getUsers();
+  document.getElementById('adminUserCount').textContent=`${users.length} usuario(s) registrado(s)`;
+  const tbody=document.getElementById('adminTbody');
+  tbody.innerHTML=users.map((u,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td><b>${u.nombre}</b></td>
+      <td><a href="mailto:${u.email}" style="color:#1a3a5c;font-size:.8rem">${u.email}</a></td>
+      <td style="font-size:.8rem">${u.org||'—'}</td>
+      <td style="font-size:.78rem">${u.fecha||'—'}</td>
+      <td style="font-size:.78rem">${u.ultimoAcceso||'—'}</td>
+      <td><span class="admin-badge ${u.rol==='admin'?'ab-admin':'ab-user'}">${u.rol==='admin'?'👑 Admin':'👤 Consultor'}</span></td>
+      <td><button onclick="verPerfilConsultor('${u.email}')" class="btn btn-outline btn-sm" style="font-size:.72rem">👁️ Ver perfil</button></td>
+    </tr>
+  `).join('');
+  document.getElementById('adminPanel').classList.add('open');
+}
+
+function verPerfilConsultor(email){
+  switchAdminTab('perfiles');
+  const raw=localStorage.getItem('gbp_data_'+email);
+  renderPerfilCard(email, raw ? JSON.parse(raw) : null, true);
+}
+
+function renderAdminPerfiles(){
+  const users=getUsers().filter(u=>u.rol!=='admin');
+  if(!users.length){
+    document.getElementById('adminPerfilesContent').innerHTML='<div class="empty-state"><div class="empty-ico">👥</div><p>No hay consultores registrados aún.</p></div>';
+    return;
+  }
+  let html='';
+  users.forEach(u=>{
+    const raw=localStorage.getItem('gbp_data_'+u.email);
+    const data=raw?JSON.parse(raw):null;
+    const p=data?.perfil||{};
+    const tiene=p.nombre||p.areas?.length;
+    const grants=data?.misGrants||[];
+    const topAreas=(p.areas||[]).slice(0,3).join(', ')||'Sin completar';
+    const potencial=calcPotencial(p);
+    html+=`
+    <div class="admin-consultant-card">
+      <div class="admin-consultant-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div>
+          <div class="admin-consultant-name">👤 ${u.nombre} <small style="color:#6b7280;font-weight:400">&lt;${u.email}&gt;</small></div>
+          <div style="font-size:.78rem;color:#6b7280;margin-top:2px">${u.org} · Registro: ${u.fecha} · Último acceso: ${u.ultimoAcceso||'—'}</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="background:${tiene?'#dcfce7':'#fee2e2'};color:${tiene?'#166534':'#991b1b'};padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700">${tiene?'✅ Perfil completo':'⚠️ Sin perfil'}</span>
+          <span style="background:#dbeafe;color:#1d4ed8;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700">Potencial: ${potencial}%</span>
+          <span style="font-size:1rem;color:#6b7280">▼</span>
+        </div>
+      </div>
+      <div style="display:none;padding-top:14px;border-top:1px solid #e2e8f0;margin-top:10px">
+        ${tiene ? `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.82rem;margin-bottom:12px">
+          <div><b>Nombre:</b> ${p.nombre||'—'}</div>
+          <div><b>País:</b> ${p.pais||'Bolivia'}</div>
+          <div><b>Áreas:</b> ${topAreas}</div>
+          <div><b>Inglés:</b> ${p.english||'—'}</div>
+          <div><b>Experiencia:</b> ${p.anios?p.anios+' años':'—'}</div>
+          <div><b>Donantes previos:</b> ${p.donantes||'—'}</div>
+          <div><b>Entidad:</b> ${p.tipoEntidad||'—'}</div>
+          <div><b>Montos gestionados:</b> ${p.monto||'—'}</div>
+        </div>
+        <div style="margin-bottom:10px">
+          <b style="font-size:.83rem">Grants en pipeline (${grants.length}):</b>
+          ${grants.length?grants.slice(0,5).map(g=>`<span class="tag tag-blue" style="margin:2px">${g}</span>`).join(''):'<span style="color:#6b7280;font-size:.8rem"> Sin grants guardados</span>'}
+        </div>
+        <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px;font-size:.82rem">
+          <b>💡 Recomendaciones para mejorar su perfil:</b>
+          <ul style="margin-top:6px;padding-left:16px;line-height:1.8">
+            ${generarRecomendaciones(p).map(r=>`<li>${r}</li>`).join('')}
+          </ul>
+        </div>
+        ` : `<div style="color:#6b7280;font-size:.83rem;padding:10px 0">Este consultor aún no ha completado su perfil. Pídele que inicie sesión e importe su CV o complete el formulario.</div>`}
+      </div>
+    </div>`;
+  });
+  document.getElementById('adminPerfilesContent').innerHTML=html;
+}
+
+function calcPotencial(p){
+  let score=0;
+  if(p.nombre) score+=10;
+  if(p.areas&&p.areas.length>0) score+=20;
+  if(p.english&&p.english.includes('Avanzado')) score+=15;
+  else if(p.english&&p.english.includes('Intermedio')) score+=8;
+  if(p.anios&&parseInt(p.anios)>=5) score+=20;
+  else if(p.anios&&parseInt(p.anios)>=2) score+=12;
+  if(p.donantes) score+=15;
+  if(p.capacidades&&Object.keys(p.capacidades).length>=5) score+=20;
+  return Math.min(100,score);
+}
+
+function generarRecomendaciones(p){
+  const recs=[];
+  if(!p.english||p.english.includes('Básico')) recs.push('Mejorar nivel de inglés a B2+ para acceder a convocatorias USAID, GIZ y Embajada Canadá');
+  if(!p.anios||parseInt(p.anios)<3) recs.push('Documentar experiencia previa con indicadores de resultados para fortalecer historial');
+  if(!p.donantes) recs.push('Registrar todos los donantes con quienes ha trabajado — clave para scoring de elegibilidad');
+  if(!p.areas||p.areas.length<2) recs.push('Ampliar áreas temáticas de acción para matchear más convocatorias');
+  if(!p.capacidades||Object.keys(p.capacidades).length<4) recs.push('Completar evaluación de capacidades para mejorar el análisis de brechas');
+  if(!p.monto) recs.push('Registrar montos gestionados previamente — criterio de elegibilidad para convocatorias grandes');
+  if(!p.tipoEntidad) recs.push('Especificar tipo de entidad para filtrar convocatorias con requisitos de persona jurídica');
+  if(!recs.length) recs.push('Perfil completo. Mantener actualizado con nuevos proyectos y donantes.');
+  return recs;
+}
+
+function renderPerfilCard(email, data, scroll){
+  const content=document.getElementById('adminPerfilesContent');
+  const p=data?.perfil||{};
+  const potencial=calcPotencial(p);
+  content.innerHTML=`
+    <div style="margin-bottom:12px"><button onclick="renderAdminPerfiles()" class="btn btn-outline btn-sm">← Volver a todos</button></div>
+    <div class="admin-consultant-card">
+      <div style="font-weight:700;color:#1a3a5c;font-size:1rem;margin-bottom:14px">📊 Perfil: ${email}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.83rem;margin-bottom:14px">
+        <div><b>Nombre:</b> ${p.nombre||'—'}</div>
+        <div><b>País:</b> ${p.pais||'Bolivia'}</div>
+        <div><b>Áreas:</b> ${(p.areas||[]).join(', ')||'Sin completar'}</div>
+        <div><b>Inglés:</b> ${p.english||'—'}</div>
+        <div><b>Experiencia:</b> ${p.anios?p.anios+' años':'—'}</div>
+        <div><b>Donantes:</b> ${p.donantes||'—'}</div>
+        <div><b>Potencial adjudicación:</b> <span style="color:#1d4ed8;font-weight:700">${potencial}%</span></div>
+      </div>
+      <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px;font-size:.82rem">
+        <b>💡 Recomendaciones:</b>
+        <ul style="margin-top:6px;padding-left:16px;line-height:1.8">
+          ${generarRecomendaciones(p).map(r=>`<li>${r}</li>`).join('')}
+        </ul>
+      </div>
+    </div>`;
+  if(scroll) document.getElementById('adminPerfilesContent').scrollIntoView({behavior:'smooth'});
+}
+
+function importConsultorProfile(){
+  const code=document.getElementById('importProfileCode').value.trim();
+  const resultEl=document.getElementById('importProfileResult');
+  try{
+    const data=JSON.parse(atob(code));
+    const p=data.perfil||{};
+    const potencial=calcPotencial(p);
+    const recs=generarRecomendaciones(p);
+    resultEl.innerHTML=`
+      <div style="background:#dcfce7;border:1.5px solid #86efac;border-radius:12px;padding:16px">
+        <div style="font-weight:700;color:#166534;margin-bottom:10px">✅ Perfil importado correctamente</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.82rem;margin-bottom:12px">
+          <div><b>Nombre:</b> ${p.nombre||'—'}</div>
+          <div><b>Email:</b> ${p.email||'—'}</div>
+          <div><b>Áreas:</b> ${(p.areas||[]).join(', ')||'—'}</div>
+          <div><b>Inglés:</b> ${p.english||'—'}</div>
+          <div><b>Experiencia:</b> ${p.anios?p.anios+' años':'—'}</div>
+          <div><b>Donantes:</b> ${p.donantes||'—'}</div>
+          <div><b>Entidad:</b> ${p.tipoEntidad||'—'}</div>
+          <div><b>Potencial:</b> <span style="color:#1d4ed8;font-weight:700">${potencial}%</span></div>
+        </div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px;font-size:.82rem">
+          <b>💡 Recomendaciones:</b>
+          <ul style="margin-top:6px;padding-left:16px;line-height:1.8">
+            ${recs.map(r=>`<li>${r}</li>`).join('')}
+          </ul>
+        </div>
+      </div>`;
+  }catch(e){
+    resultEl.innerHTML='<div style="color:#dc2626;font-size:.83rem;padding:10px;background:#fee2e2;border-radius:8px">❌ Código inválido. Pide al consultor que genere el código de perfil correctamente.</div>';
+  }
+}
+
+function exportUsers(){
+  const users=getUsers();
+  const csv='Nombre,Email,Organización,Fecha Registro,Último acceso,Rol\n'+
+    users.map(u=>`"${u.nombre}","${u.email}","${u.org||''}","${u.fecha||''}","${u.ultimoAcceso||''}","${u.rol}"`).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download=`GBPro_Consultores_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+function exportUsersWord(){
+  const users=getUsers();
+  let content='REGISTRO DE CONSULTORES — GRANTSBOLIVIA PRO\n';
+  content+='Fecha: '+new Date().toLocaleDateString('es-BO')+'\n\n';
+  users.forEach((u,i)=>{
+    content+=`${i+1}. ${u.nombre}\n   Email: ${u.email}\n   Organización: ${u.org||'—'}\n   Registro: ${u.fecha||'—'}\n   Último acceso: ${u.ultimoAcceso||'—'}\n   Rol: ${u.rol}\n\n`;
+    const raw=localStorage.getItem('gbp_data_'+u.email);
+    if(raw){
+      const data=JSON.parse(raw);
+      const p=data.perfil||{};
+      if(p.areas&&p.areas.length) content+=`   Áreas: ${p.areas.join(', ')}\n`;
+      if(p.english) content+=`   Inglés: ${p.english}\n`;
+      if(p.anios) content+=`   Experiencia: ${p.anios} años\n`;
+      content+=`   Potencial: ${calcPotencial(p)}%\n`;
+      const recs=generarRecomendaciones(p);
+      content+=`   Recomendaciones:\n${recs.map(r=>`     - ${r}`).join('\n')}\n`;
+    }
+    content+='\n---\n\n';
+  });
+  const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`GBPro_Consultores_${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+}
+
+function clearNonAdmins(){
+  if(!confirm('¿Eliminar todos los usuarios (excepto admin)?')) return;
+  const users=getUsers().filter(u=>u.rol==='admin');
+  saveUsers(users);
+  openAdminPanel();
+}
+
+function doChangePass(){
+  const actual=document.getElementById('cpActual').value;
+  const nueva=document.getElementById('cpNueva').value;
+  const confirm=document.getElementById('cpConfirm').value;
+  const msg=document.getElementById('cpMsg');
+  const savedPass=localStorage.getItem('gbp_adminPass')||ACCESS_CFG.adminPass;
+  if(!actual||!nueva||!confirm){msg.style.color='#dc2626';msg.textContent='Completa todos los campos';return;}
+  if(actual!==savedPass){msg.style.color='#dc2626';msg.textContent='Contraseña actual incorrecta';return;}
+  if(nueva.length<8){msg.style.color='#dc2626';msg.textContent='Mínimo 8 caracteres';return;}
+  if(nueva!==confirm){msg.style.color='#dc2626';msg.textContent='Las contraseñas no coinciden';return;}
+  localStorage.setItem('gbp_adminPass',nueva);
+  ACCESS_CFG.adminPass=nueva;
+  msg.style.color='#2e7d32';msg.textContent='✅ Contraseña actualizada';
+}
+
+function showWelcomeBanner(nombre){
+  const modal=document.createElement('div');
+  modal.id='welcomeModal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:5000;display:flex;align-items:center;justify-content:center';
+  modal.onclick=function(e){if(e.target===modal){modal.remove();renderDashboard();}};
+  modal.innerHTML=`
+  <div style="background:#fff;border-radius:20px;padding:36px;max-width:500px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative">
+    <button onclick="document.getElementById('welcomeModal').remove();renderDashboard()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;line-height:1" title="Cerrar">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:12px">🌐</div>
+    <h2 style="color:#1a3a5c;margin-bottom:8px">¡Bienvenido/a, ${nombre}!</h2>
+    <p style="color:#6b7280;font-size:.9rem;margin-bottom:20px;line-height:1.6">Para encontrar los <b>grants más compatibles con tu perfil</b>, necesito conocer tu experiencia. Puedes <b>importar tu CV</b> o <b>llenar el formulario</b> directamente.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button onclick="document.getElementById('welcomeModal').remove();nav('perfil');switchTab('perfil','cv')"
+        style="padding:12px;background:#1a3a5c;color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer">📄 Importar mi CV (recomendado)</button>
+      <button onclick="document.getElementById('welcomeModal').remove();nav('perfil')"
+        style="padding:12px;background:#e8a020;color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer">✏️ Completar perfil manualmente</button>
+      <button onclick="document.getElementById('welcomeModal').remove();renderDashboard()"
+        style="padding:10px;background:transparent;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.85rem;color:#6b7280;cursor:pointer">Explorar la app primero</button>
+    </div>
+    <div style="margin-top:16px;padding:10px;background:#f0f9ff;border-radius:8px;font-size:.78rem;color:#0284c7">
+      🔑 <b>Contraseña para ingresar:</b> GrantsBolivia2026
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+/* session restore handled by initOnLoad in Script 2 */
+</script>
+
+<script>
+// GRANTS DB MERGE
+const GRANTS_DB_BASE = [
+  {
+    "id": "scaleup",
+    "titulo": "FY26 ScaleUp Bolivia",
+    "donante": "USAID / Embajada EEUU",
+    "area": "Emprendimiento",
+    "monto": "$20,000–$40,000",
+    "deadline": "2026-07-15",
+    "estado": "urgent",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Formalización de emprendimientos con impacto en empleo e innovación. Requiere modelo probado y co-implementador local. Cierre 15 julio 2026.",
+    "link": "https://bo.usembassy.gov",
+    "score": 92,
+    "tags": [
+      "USAID",
+      "Bolivia",
+      "Emprendimiento",
+      "Innovación"
+    ]
+  },
+  {
+    "id": "usaid_diplo",
+    "titulo": "Public Diplomacy Small Grants Bolivia",
+    "donante": "Embajada EEUU La Paz",
+    "area": "Cultura",
+    "monto": "$1,000–$50,000",
+    "deadline": "2026-08-15",
+    "estado": "urgent",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Intercambio cultural, educativo y científico entre EEUU y Bolivia. Ideal para proyectos de arte, cultura y diplomacia pública.",
+    "link": "https://bo.usembassy.gov/grants",
+    "score": 78,
+    "tags": [
+      "EEUU",
+      "Cultura",
+      "Educación",
+      "Diplomacia"
+    ]
+  },
+  {
+    "id": "usaid_drg",
+    "titulo": "USAID Democracia y Derechos Humanos Bolivia",
+    "donante": "USAID",
+    "area": "Derechos Humanos",
+    "monto": "$200,000–$2,000,000",
+    "deadline": "2026-12-01",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Fortalecimiento institucional, sociedad civil, transparencia y gobernanza democrática. Ventana regional LAC.",
+    "link": "https://www.usaid.gov",
+    "score": 80,
+    "tags": [
+      "USAID",
+      "Derechos Humanos",
+      "Democracia",
+      "Gobernanza"
+    ]
+  },
+  {
+    "id": "usaid_ftf",
+    "titulo": "USAID Feed the Future Latinoamérica",
+    "donante": "USAID",
+    "area": "Alimentación",
+    "monto": "$1,000,000–$10,000,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Seguridad alimentaria, agricultura sostenible, nutrición y resiliencia climática en comunidades vulnerables de Bolivia.",
+    "link": "https://www.usaid.gov/food-assistance",
+    "score": 72,
+    "tags": [
+      "USAID",
+      "Alimentación",
+      "Agricultura",
+      "Nutrición"
+    ]
+  },
+  {
+    "id": "usaid_clima",
+    "titulo": "USAID Cambio Climático Latinoamérica",
+    "donante": "USAID",
+    "area": "Medio Ambiente",
+    "monto": "$500,000–$3,000,000",
+    "deadline": "2026-10-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Adaptación y mitigación al cambio climático, conservación de bosques y biodiversidad en Bolivia y la Amazonía.",
+    "link": "https://www.usaid.gov/climate",
+    "score": 76,
+    "tags": [
+      "USAID",
+      "Medio Ambiente",
+      "Clima",
+      "Amazonía"
+    ]
+  },
+  {
+    "id": "usaid_salud",
+    "titulo": "USAID Salud Global Bolivia",
+    "donante": "USAID",
+    "area": "Salud",
+    "monto": "$300,000–$2,000,000",
+    "deadline": "2026-11-15",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Fortalecimiento de sistemas de salud, VIH/SIDA, salud materna y seguridad sanitaria en Bolivia.",
+    "link": "https://www.usaid.gov/global-health",
+    "score": 74,
+    "tags": [
+      "USAID",
+      "Salud",
+      "VIH",
+      "Salud Materna"
+    ]
+  },
+  {
+    "id": "canada_fli",
+    "titulo": "Canada Fund for Local Initiatives — Bolivia",
+    "donante": "Embajada de Canadá",
+    "area": "Derechos Humanos",
+    "monto": "$25,000–$100,000 CAD",
+    "deadline": "2026-08-31",
+    "estado": "urgent",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Proyectos de género, derechos humanos, medio ambiente y gobernanza. Proceso ágil para ONGs pequeñas.",
+    "link": "https://www.international.gc.ca",
+    "score": 74,
+    "tags": [
+      "Canadá",
+      "Género",
+      "Derechos Humanos",
+      "Ambiente",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "canada_ddhh",
+    "titulo": "Programa Canadá Derechos Humanos Bolivia",
+    "donante": "Gobierno de Canadá / DFATD",
+    "area": "Derechos Humanos",
+    "monto": "$500,000–$2,400,000 CAD",
+    "deadline": "2027-03-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Fortalece derechos de mujeres, pueblos indígenas y defensores de DDHH en Bolivia. Alianza con gobierno y sociedad civil.",
+    "link": "https://www.international.gc.ca",
+    "score": 70,
+    "tags": [
+      "Canadá",
+      "DDHH",
+      "Género",
+      "Indígenas"
+    ]
+  },
+  {
+    "id": "onu_mujeres_paz",
+    "titulo": "ONU Mujeres — Paz y Voces de Mujeres Bolivia",
+    "donante": "ONU Mujeres",
+    "area": "Género",
+    "monto": "$80,000–$150,000",
+    "deadline": "2026-09-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Construcción de paz, arte y liderazgo femenino en Bolivia. Especial énfasis en mujeres indígenas y rurales.",
+    "link": "https://www.unwomen.org",
+    "score": 82,
+    "tags": [
+      "ONU Mujeres",
+      "Género",
+      "Paz",
+      "Indígenas",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "onu_violencia",
+    "titulo": "ONU Mujeres — Acción contra Violencia Tecnológica",
+    "donante": "ONU Mujeres",
+    "area": "Género",
+    "monto": "$139,000–$140,000",
+    "deadline": "2026-09-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Fortalece respuestas institucionales contra violencia digital contra mujeres y niñas en Bolivia.",
+    "link": "https://www.unwomen.org/en/trust-funds",
+    "score": 79,
+    "tags": [
+      "ONU Mujeres",
+      "Género",
+      "Tecnología",
+      "DDHH",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "pnud_sgp",
+    "titulo": "PNUD Small Grants Programme GEF Bolivia",
+    "donante": "PNUD / GEF",
+    "area": "Medio Ambiente",
+    "monto": "$10,000–$50,000",
+    "deadline": "2026-11-01",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Pequeñas subvenciones para comunidades locales en biodiversidad, cambio climático, aguas y bosques en Bolivia.",
+    "link": "https://sgp.undp.org",
+    "score": 76,
+    "tags": [
+      "PNUD",
+      "GEF",
+      "Medio Ambiente",
+      "Agua",
+      "Comunidades"
+    ]
+  },
+  {
+    "id": "fao_alimentos",
+    "titulo": "FAO Bolivia Sistemas Alimentarios Amazonia",
+    "donante": "FAO / Fondo ODS Conjunto",
+    "area": "Alimentación",
+    "monto": "$500,000–$3,100,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Fortalecimiento de sistemas alimentarios sostenibles en la Amazonía boliviana. Alianza ONU multi-agencial.",
+    "link": "https://www.fao.org/bolivia",
+    "score": 68,
+    "tags": [
+      "FAO",
+      "Alimentación",
+      "Amazonía",
+      "Sostenibilidad"
+    ]
+  },
+  {
+    "id": "ifad_accesos",
+    "titulo": "IFAD ACCESOS Rural Bolivia",
+    "donante": "FIDA / IFAD",
+    "area": "Agricultura",
+    "monto": "$2,000,000–$15,000,000",
+    "deadline": "2027-06-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Apoya pequeños agricultores bolivianos ante cambio climático y mejora producción de alimentos básicos.",
+    "link": "https://www.ifad.org",
+    "score": 62,
+    "tags": [
+      "IFAD",
+      "Agricultura",
+      "Rural",
+      "Alimentación",
+      "Clima"
+    ]
+  },
+  {
+    "id": "unicef_ninez",
+    "titulo": "UNICEF Bolivia Niñez, Educación y Agua",
+    "donante": "UNICEF",
+    "area": "Educación",
+    "monto": "$100,000–$500,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Protección de la niñez, educación inclusiva y acceso a agua y saneamiento para niños y niñas en Bolivia.",
+    "link": "https://www.unicef.org/bolivia",
+    "score": 70,
+    "tags": [
+      "UNICEF",
+      "Educación",
+      "Niñez",
+      "Agua",
+      "DDHH"
+    ]
+  },
+  {
+    "id": "unfpa_salud",
+    "titulo": "UNFPA Bolivia Salud Sexual y Reproductiva",
+    "donante": "UNFPA",
+    "area": "Salud",
+    "monto": "$100,000–$600,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Proyectos de salud reproductiva, prevención de embarazo adolescente y derechos en Bolivia.",
+    "link": "https://www.unfpa.org",
+    "score": 64,
+    "tags": [
+      "UNFPA",
+      "Salud",
+      "Género",
+      "Educación"
+    ]
+  },
+  {
+    "id": "oms_salud",
+    "titulo": "OPS/OMS Bolivia Fortalecimiento Sanitario",
+    "donante": "OPS / OMS",
+    "area": "Salud",
+    "monto": "$200,000–$1,000,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Fortalecimiento de sistemas de salud, enfermedades transmisibles y no transmisibles, salud primaria en Bolivia.",
+    "link": "https://www.paho.org/es/bolivia",
+    "score": 66,
+    "tags": [
+      "OPS",
+      "OMS",
+      "Salud",
+      "Bolivia",
+      "Sistemas de Salud"
+    ]
+  },
+  {
+    "id": "sdg_fund",
+    "titulo": "Fondo ODS Conjunto — Bolivia",
+    "donante": "Joint SDG Fund / ONU",
+    "area": "Desarrollo",
+    "monto": "$500,000–$5,000,000",
+    "deadline": "2027-06-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Programas integrados para acelerar ODS en Bolivia. Requiere articulación inter-agencial y enfoque de múltiples sectores.",
+    "link": "https://www.jointsdgfund.org",
+    "score": 60,
+    "tags": [
+      "ONU",
+      "ODS",
+      "Desarrollo Sostenible"
+    ]
+  },
+  {
+    "id": "ue_sociedad_civil",
+    "titulo": "UE Organizaciones Sociedad Civil Bolivia",
+    "donante": "Unión Europea",
+    "area": "Gobernanza",
+    "monto": "€200,000–€1,000,000",
+    "deadline": "2026-10-15",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Fortalecimiento de OSC como actores de gobernanza y desarrollo en Bolivia. Programa temático EU.",
+    "link": "https://eeas.europa.eu/delegations/bolivia",
+    "score": 84,
+    "tags": [
+      "UE",
+      "Gobernanza",
+      "Sociedad Civil",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "ue_eidhr",
+    "titulo": "UE Instrumento Democracia y DDHH (EIDHR)",
+    "donante": "Unión Europea",
+    "area": "Derechos Humanos",
+    "monto": "€50,000–€500,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Apoyo a defensores de DDHH, justicia, libertad de expresión y democracia en Bolivia y AL.",
+    "link": "https://ec.europa.eu/eidhr",
+    "score": 80,
+    "tags": [
+      "UE",
+      "DDHH",
+      "Democracia",
+      "Defensores"
+    ]
+  },
+  {
+    "id": "ue_mipymes",
+    "titulo": "UE Competitividad MIPYMES Bolivia 2026",
+    "donante": "Unión Europea",
+    "area": "Emprendimiento",
+    "monto": "€200,000–€800,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Apoyo a micro y pequeñas empresas en digitalización, acceso a mercados y sostenibilidad en Bolivia.",
+    "link": "https://ec.europa.eu",
+    "score": 78,
+    "tags": [
+      "UE",
+      "MIPYMES",
+      "Emprendimiento",
+      "Digital"
+    ]
+  },
+  {
+    "id": "ue_erasmus",
+    "titulo": "UE Erasmus+ Cooperación Internacional Bolivia",
+    "donante": "Unión Europea",
+    "area": "Educación",
+    "monto": "€200,000–€1,500,000",
+    "deadline": "2027-02-28",
+    "estado": "upcoming",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Movilidad académica, desarrollo de capacidades y alianzas universitarias entre Bolivia y países europeos.",
+    "link": "https://erasmus-plus.ec.europa.eu",
+    "score": 72,
+    "tags": [
+      "UE",
+      "Educación",
+      "Universidad",
+      "Movilidad"
+    ]
+  },
+  {
+    "id": "ue_cultura",
+    "titulo": "UE Europa Creativa — Proyectos Culturales LA",
+    "donante": "Unión Europea / Europa Creativa",
+    "area": "Cultura",
+    "monto": "€200,000–€2,000,000",
+    "deadline": "2027-01-31",
+    "estado": "upcoming",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Apoyo a industrias culturales y creativas, artes escénicas, patrimonio y cooperación cultural entre Bolivia y Europa.",
+    "link": "https://culture.ec.europa.eu",
+    "score": 74,
+    "tags": [
+      "UE",
+      "Cultura",
+      "Artes",
+      "Patrimonio",
+      "Creative Economy"
+    ]
+  },
+  {
+    "id": "aecid",
+    "titulo": "AECID Cooperación España-Bolivia",
+    "donante": "España / AECID",
+    "area": "Educación",
+    "monto": "€100,000–€1,000,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Cooperación bilateral en educación, género, medioambiente y gobernanza. Convocatorias anuales AECID.",
+    "link": "https://aecid.bo",
+    "score": 76,
+    "tags": [
+      "España",
+      "AECID",
+      "Educación",
+      "Género",
+      "Ambiente"
+    ]
+  },
+  {
+    "id": "giz_inova",
+    "titulo": "GIZ Fondo de Innovación Bolivia",
+    "donante": "GIZ / Cooperación Alemana",
+    "area": "Gobernanza",
+    "monto": "€50,000–€100,000",
+    "deadline": "2026-12-15",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Financia proyectos de transparencia, democracia y reforma institucional en Bolivia. Medidas de 6-12 meses.",
+    "link": "https://www.giz.de/en/projects/fondo-de-innovacion-bolivia",
+    "score": 88,
+    "tags": [
+      "GIZ",
+      "Alemania",
+      "Gobernanza",
+      "Innovación",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "giz_gen",
+    "titulo": "GIZ Género y Autonomía Económica Bolivia",
+    "donante": "GIZ / Cooperación Alemana",
+    "area": "Género",
+    "monto": "€100,000–€400,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Promueve autonomía económica de mujeres en Bolivia con enfoque en emprendimiento y acceso a mercados.",
+    "link": "https://www.giz.de",
+    "score": 74,
+    "tags": [
+      "GIZ",
+      "Alemania",
+      "Género",
+      "Emprendimiento"
+    ]
+  },
+  {
+    "id": "goethe",
+    "titulo": "Instituto Goethe Bolivia — Proyectos Culturales",
+    "donante": "Instituto Goethe / Alemania",
+    "area": "Cultura",
+    "monto": "€5,000–€50,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Intercambio cultural, arte, música, cine y literatura entre Alemania y Bolivia. Convocatorias anuales.",
+    "link": "https://www.goethe.de/ins/bo",
+    "score": 72,
+    "tags": [
+      "Alemania",
+      "Cultura",
+      "Arte",
+      "Música",
+      "Cine",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "cosude_agua",
+    "titulo": "COSUDE Bolivia Agua y Cambio Climático",
+    "donante": "COSUDE / Embajada Suiza",
+    "area": "Agua",
+    "monto": "$200,000–$2,000,000",
+    "deadline": "2026-09-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Gestión hídrica, adaptación climática y prevención de desastres en Bolivia. Hub Lima cubre Sudamérica.",
+    "link": "https://www.eda.admin.ch/countries/bolivia",
+    "score": 82,
+    "tags": [
+      "Suiza",
+      "COSUDE",
+      "Agua",
+      "Clima",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "suiza_local",
+    "titulo": "Embajada Suiza Small Grants Bolivia",
+    "donante": "Embajada de Suiza",
+    "area": "Emprendimiento",
+    "monto": "$25,000–$100,000",
+    "deadline": "2026-07-31",
+    "estado": "urgent",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Apoyo a emprendimientos sostenibles con impacto social en Bolivia. Proceso simplificado y ágil.",
+    "link": "https://www.eda.admin.ch",
+    "score": 72,
+    "tags": [
+      "Suiza",
+      "Emprendimiento",
+      "Social",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "jica",
+    "titulo": "JICA Bolivia Cooperación Técnica",
+    "donante": "JICA / Japón",
+    "area": "Educación",
+    "monto": "$100,000–$500,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Asia",
+    "ingles": true,
+    "desc": "Cooperación técnica japonesa en educación, salud, infraestructura y desarrollo rural en Bolivia.",
+    "link": "https://www.jica.go.jp",
+    "score": 68,
+    "tags": [
+      "Japón",
+      "JICA",
+      "Educación",
+      "Salud",
+      "Tecnología"
+    ]
+  },
+  {
+    "id": "japon_embajada",
+    "titulo": "Embajada Japón — Proyectos Comunitarios Bolivia",
+    "donante": "Embajada de Japón",
+    "area": "Educación",
+    "monto": "$5,000–$100,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Asia",
+    "ingles": true,
+    "desc": "Mejoramiento comunitario, educación, salud y agua en comunidades vulnerables de Bolivia.",
+    "link": "https://www.bo.emb-japan.go.jp",
+    "score": 66,
+    "tags": [
+      "Japón",
+      "Educación",
+      "Agua",
+      "Comunidades",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "koica",
+    "titulo": "KOICA Bolivia Tecnología y Educación",
+    "donante": "KOICA / Corea del Sur",
+    "area": "Educación",
+    "monto": "$500,000–$3,000,000",
+    "deadline": "2027-03-31",
+    "estado": "upcoming",
+    "pais": "Bolivia",
+    "continente": "Asia",
+    "ingles": true,
+    "desc": "Programas de TIC, educación digital y desarrollo en Bolivia. Énfasis en formación técnica.",
+    "link": "https://www.koica.go.kr",
+    "score": 62,
+    "tags": [
+      "Corea",
+      "KOICA",
+      "Educación",
+      "Tecnología",
+      "TIC"
+    ]
+  },
+  {
+    "id": "hivos",
+    "titulo": "Hivos / Países Bajos Bolivia",
+    "donante": "Países Bajos / Hivos",
+    "area": "Género",
+    "monto": "€100,000–€500,000",
+    "deadline": "2026-11-15",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Derechos sexuales y reproductivos, género, medio ambiente y democracia en Bolivia y región andina.",
+    "link": "https://www.hivos.org",
+    "score": 76,
+    "tags": [
+      "Holanda",
+      "Hivos",
+      "Género",
+      "DDHH",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "inst_frances",
+    "titulo": "Institut Français Bolivia — Cultura y Arte",
+    "donante": "Institut Français / Francia",
+    "area": "Cultura",
+    "monto": "€3,000–€30,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Intercambio cultural franco-boliviano: artes escénicas, audiovisual, literatura y residencias artísticas.",
+    "link": "https://www.institutfrancais.com",
+    "score": 70,
+    "tags": [
+      "Francia",
+      "Cultura",
+      "Arte",
+      "Audiovisual",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "uk_fcdo",
+    "titulo": "UK FCDO Desarrollo Bolivia",
+    "donante": "Reino Unido / FCDO",
+    "area": "Derechos Humanos",
+    "monto": "£100,000–£1,000,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": true,
+    "desc": "Gobernanza, DDHH, género y desarrollo económico del FCDO de UK en Bolivia y la región andina.",
+    "link": "https://www.gov.uk/fcdo",
+    "score": 68,
+    "tags": [
+      "UK",
+      "FCDO",
+      "DDHH",
+      "Gobernanza",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "british_council",
+    "titulo": "British Council Bolivia — Cultura y Educación",
+    "donante": "British Council / UK",
+    "area": "Cultura",
+    "monto": "£5,000–£100,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": true,
+    "desc": "Intercambio cultural, educativo y artístico entre Bolivia y el Reino Unido. Artes, inglés e innovación.",
+    "link": "https://www.britishcouncil.org",
+    "score": 72,
+    "tags": [
+      "UK",
+      "Cultura",
+      "Educación",
+      "Arte",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "unesco_cultura",
+    "titulo": "UNESCO Cultura y Patrimonio Bolivia",
+    "donante": "UNESCO",
+    "area": "Cultura",
+    "monto": "$50,000–$500,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Preservación de patrimonio cultural, lenguas indígenas, cultura viva y economía creativa en Bolivia.",
+    "link": "https://es.unesco.org/fieldoffice/quito",
+    "score": 78,
+    "tags": [
+      "UNESCO",
+      "Cultura",
+      "Patrimonio",
+      "Indígenas",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "unesco_educ",
+    "titulo": "UNESCO Educación Inclusiva Bolivia",
+    "donante": "UNESCO",
+    "area": "Educación",
+    "monto": "$100,000–$1,000,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": false,
+    "desc": "Educación de calidad, inclusión, formación docente y reducción de brechas educativas en Bolivia.",
+    "link": "https://es.unesco.org",
+    "score": 74,
+    "tags": [
+      "UNESCO",
+      "Educación",
+      "Inclusión",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "oei_cultura",
+    "titulo": "OEI Ibercultura Viva Bolivia",
+    "donante": "OEI / Ibercultura Viva",
+    "area": "Cultura",
+    "monto": "$10,000–$100,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América Latina",
+    "ingles": false,
+    "desc": "Puntos de cultura, economía creativa y políticas culturales comunitarias en Bolivia e Iberoamérica.",
+    "link": "https://www.oei.int",
+    "score": 74,
+    "tags": [
+      "OEI",
+      "Cultura",
+      "Comunidades",
+      "Iberoamérica",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "iaf",
+    "titulo": "Inter-American Foundation Bolivia",
+    "donante": "Inter-American Foundation (IAF)",
+    "area": "Desarrollo",
+    "monto": "$50,000–$400,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Apoya organizaciones de base comunitaria para desarrollo económico y social en Bolivia. Proceso abierto.",
+    "link": "https://iaf.gov/country/bolivia",
+    "score": 78,
+    "tags": [
+      "IAF",
+      "EEUU",
+      "Desarrollo",
+      "Comunidades",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "ford",
+    "titulo": "Ford Foundation Latinoamérica",
+    "donante": "Fundación Ford",
+    "area": "Derechos Humanos",
+    "monto": "$100,000–$2,000,000",
+    "deadline": "2027-01-31",
+    "estado": "upcoming",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Movimientos sociales, justicia racial, derechos indígenas y democracia en América Latina incluyendo Bolivia.",
+    "link": "https://www.fordfoundation.org",
+    "score": 72,
+    "tags": [
+      "Ford Foundation",
+      "DDHH",
+      "Indígenas",
+      "Democracia",
+      "AL"
+    ]
+  },
+  {
+    "id": "open_society",
+    "titulo": "Open Society Foundations Latinoamérica",
+    "donante": "Open Society Foundations",
+    "area": "Derechos Humanos",
+    "monto": "$50,000–$2,000,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Derechos humanos, justicia, transparencia y sociedad civil en Bolivia. Estrategia Buen Vivir LA. Mediana: $250K.",
+    "link": "https://www.opensocietyfoundations.org",
+    "score": 76,
+    "tags": [
+      "OSF",
+      "DDHH",
+      "Democracia",
+      "Transparencia",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "macarthur",
+    "titulo": "MacArthur Foundation Conservación LA",
+    "donante": "MacArthur Foundation",
+    "area": "Medio Ambiente",
+    "monto": "$200,000–$2,000,000",
+    "deadline": "2026-11-01",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Conservación de biodiversidad, bosques tropicales. Bolivia incluida por su riqueza amazónica y Chaco.",
+    "link": "https://www.macfound.org",
+    "score": 74,
+    "tags": [
+      "MacArthur",
+      "Medio Ambiente",
+      "Conservación",
+      "Amazonía",
+      "Biodiversidad"
+    ]
+  },
+  {
+    "id": "oak",
+    "titulo": "Oak Foundation Protección de la Niñez",
+    "donante": "Oak Foundation",
+    "area": "Educación",
+    "monto": "$200,000–$1,000,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": true,
+    "desc": "Protección de niños contra abuso y explotación. Programas de bienestar infantil en Bolivia.",
+    "link": "https://www.oakfnd.org",
+    "score": 70,
+    "tags": [
+      "Oak Foundation",
+      "Niñez",
+      "Educación",
+      "DDHH"
+    ]
+  },
+  {
+    "id": "hilton",
+    "titulo": "Conrad Hilton Foundation Agua Bolivia",
+    "donante": "Conrad N. Hilton Foundation",
+    "area": "Agua",
+    "monto": "$500,000–$2,000,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Acceso a agua potable y saneamiento en comunidades rurales y periurbanas de Bolivia.",
+    "link": "https://www.hiltonfoundation.org",
+    "score": 74,
+    "tags": [
+      "Hilton",
+      "Agua",
+      "Saneamiento",
+      "Rural",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "packard",
+    "titulo": "Packard Foundation Conservación LA",
+    "donante": "David & Lucile Packard Foundation",
+    "area": "Medio Ambiente",
+    "monto": "$500,000–$3,000,000",
+    "deadline": "2026-12-01",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Conservación de ecosistemas críticos de AL: Amazonía boliviana, Chaco y Pantanal.",
+    "link": "https://www.packard.org",
+    "score": 72,
+    "tags": [
+      "Packard",
+      "Medio Ambiente",
+      "Amazonía",
+      "Conservación"
+    ]
+  },
+  {
+    "id": "mott",
+    "titulo": "Mott Foundation Justicia Social LA",
+    "donante": "Charles Stewart Mott Foundation",
+    "area": "Derechos Humanos",
+    "monto": "$100,000–$1,000,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Justicia social, sociedad civil y democracia participativa. Cubre Bolivia en programa latinoamericano.",
+    "link": "https://www.mott.org",
+    "score": 68,
+    "tags": [
+      "Mott",
+      "DDHH",
+      "Democracia",
+      "Sociedad Civil"
+    ]
+  },
+  {
+    "id": "kellogg",
+    "titulo": "Kellogg Foundation Educación LA",
+    "donante": "W.K. Kellogg Foundation",
+    "area": "Educación",
+    "monto": "$200,000–$1,000,000",
+    "deadline": "2026-11-15",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Educación, niñez, nutrición y desarrollo comunitario en Latinoamérica incluyendo Bolivia.",
+    "link": "https://www.wkkf.org",
+    "score": 68,
+    "tags": [
+      "Kellogg",
+      "Educación",
+      "Niñez",
+      "Nutrición",
+      "AL"
+    ]
+  },
+  {
+    "id": "tinker",
+    "titulo": "Tinker Foundation Latinoamérica",
+    "donante": "Tinker Foundation",
+    "area": "Gobernanza",
+    "monto": "$25,000–$200,000",
+    "deadline": "2026-10-15",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Investigación, gobernanza ambiental y desarrollo sostenible en América Latina incluyendo Bolivia.",
+    "link": "https://www.tinker.org",
+    "score": 64,
+    "tags": [
+      "Tinker",
+      "Gobernanza",
+      "Ambiente",
+      "Investigación",
+      "AL"
+    ]
+  },
+  {
+    "id": "avina",
+    "titulo": "Fundación Avina Bolivia",
+    "donante": "Fundación Avina",
+    "area": "Desarrollo",
+    "monto": "$50,000–$300,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América Latina",
+    "ingles": false,
+    "desc": "Liderazgo social, democracia, transición ecológica y economía circular en Bolivia y la región andina.",
+    "link": "https://www.avina.net",
+    "score": 78,
+    "tags": [
+      "Avina",
+      "Liderazgo",
+      "Sostenibilidad",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "drk",
+    "titulo": "Draper Richards Kaplan Emprendimiento Social",
+    "donante": "Draper Richards Kaplan Foundation",
+    "area": "Emprendimiento",
+    "monto": "$100,000–$300,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Organizaciones early-stage con potencial de impacto social a escala. Bolivia elegible en proceso global competitivo.",
+    "link": "https://www.drkfoundation.org",
+    "score": 66,
+    "tags": [
+      "DRK",
+      "Emprendimiento Social",
+      "Innovación",
+      "Escala"
+    ]
+  },
+  {
+    "id": "google_ai",
+    "titulo": "Google.org AI for Government Innovation",
+    "donante": "Google.org",
+    "area": "Innovación",
+    "monto": "Hasta $3,000,000",
+    "deadline": "2026-09-30",
+    "estado": "open",
+    "pais": "Global",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Desafío global para desarrollar soluciones IA en partnership con gobiernos. $30M en fondo total.",
+    "link": "https://google.org",
+    "score": 82,
+    "tags": [
+      "Google",
+      "IA",
+      "Innovación",
+      "Gobierno",
+      "Educación"
+    ]
+  },
+  {
+    "id": "cisco_grants",
+    "titulo": "Cisco Global Impact Cash Grants",
+    "donante": "Cisco Systems / Cisco Foundation",
+    "area": "Educación",
+    "monto": "Hasta $75,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Global",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Programas de tecnología educativa, STEM, habilidades digitales y empleabilidad para comunidades vulnerables. Bolivia elegible.",
+    "link": "https://cisco.com/en/us/about/csr",
+    "score": 80,
+    "tags": [
+      "Cisco",
+      "Tecnología",
+      "Educación",
+      "STEM",
+      "Digital"
+    ]
+  },
+  {
+    "id": "f5_stem",
+    "titulo": "F5 STEM & AI Education Grants 2026",
+    "donante": "F5 Networks",
+    "area": "Educación",
+    "monto": "$50,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Global",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Grants para programas STEM con componente de IA en Latinoamérica. Bolivia elegible. Requiere componente IA explícito.",
+    "link": "https://www.f5.com/company/global-good",
+    "score": 78,
+    "tags": [
+      "F5",
+      "STEM",
+      "IA",
+      "Educación",
+      "AL"
+    ]
+  },
+  {
+    "id": "microsoft_res",
+    "titulo": "Microsoft Research Fellowship 2026",
+    "donante": "Microsoft",
+    "area": "Innovación",
+    "monto": "$17,000–$50,000",
+    "deadline": "2026-08-31",
+    "estado": "urgent",
+    "pais": "Global",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Fellowship para investigadores en IA y ciencia computacional. Latinoamérica incluida con $17K de base.",
+    "link": "https://www.microsoft.com/en-us/research",
+    "score": 72,
+    "tags": [
+      "Microsoft",
+      "IA",
+      "Investigación",
+      "Educación",
+      "Academia"
+    ]
+  },
+  {
+    "id": "bid_lab",
+    "titulo": "BID Lab Innovación Inclusiva Bolivia",
+    "donante": "BID Lab / Banco Interamericano",
+    "area": "Innovación",
+    "monto": "$100,000–$500,000",
+    "deadline": "2026-10-15",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América Latina",
+    "ingles": true,
+    "desc": "Financiamiento para soluciones innovadoras que beneficien a poblaciones de bajos ingresos en Bolivia.",
+    "link": "https://bidlab.org",
+    "score": 82,
+    "tags": [
+      "BID Lab",
+      "Innovación",
+      "Inclusión",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "caf_verde",
+    "titulo": "CAF Bolivia Verde Medio Ambiente",
+    "donante": "CAF Banco de Desarrollo",
+    "area": "Medio Ambiente",
+    "monto": "$300,000–$1,500,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América Latina",
+    "ingles": false,
+    "desc": "Proyectos de adaptación climática, bioeconomía y comunidades rurales en Bolivia.",
+    "link": "https://www.caf.com",
+    "score": 74,
+    "tags": [
+      "CAF",
+      "Medio Ambiente",
+      "Bolivia",
+      "Bioeconomía"
+    ]
+  },
+  {
+    "id": "caf_agua",
+    "titulo": "CAF Seguridad Hídrica Latinoamérica",
+    "donante": "CAF",
+    "area": "Agua",
+    "monto": "$1,000,000–$50,000,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "América Latina",
+    "ingles": false,
+    "desc": "Estrategia Agua Segura CAF 2023-2026. USD 4B total para proyectos hídricos en la región.",
+    "link": "https://www.caf.com",
+    "score": 58,
+    "tags": [
+      "CAF",
+      "Agua",
+      "Infraestructura",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "gcf",
+    "titulo": "Green Climate Fund (GCF) Bolivia",
+    "donante": "Green Climate Fund",
+    "area": "Medio Ambiente",
+    "monto": "$10,000,000+",
+    "deadline": "2027-06-30",
+    "estado": "upcoming",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Financiamiento climático para mitigación y adaptación en Bolivia. Requiere entidad acreditada implementadora.",
+    "link": "https://www.greenclimate.fund",
+    "score": 55,
+    "tags": [
+      "GCF",
+      "Clima",
+      "Medio Ambiente",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "gef",
+    "titulo": "GEF Biodiversidad y Ecosistemas Bolivia",
+    "donante": "GEF / Fondo Mundial Ambiente",
+    "area": "Medio Ambiente",
+    "monto": "$500,000–$10,000,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Conservación de biodiversidad, manejo sostenible de tierras y aguas en Bolivia. Canal PNUD o FAO.",
+    "link": "https://www.thegef.org",
+    "score": 62,
+    "tags": [
+      "GEF",
+      "Biodiversidad",
+      "Bolivia",
+      "Ecosistemas",
+      "Agua"
+    ]
+  },
+  {
+    "id": "global_fund",
+    "titulo": "Fondo Global VIH/SIDA, TB y Malaria Bolivia",
+    "donante": "The Global Fund",
+    "area": "Salud",
+    "monto": "$1,000,000–$20,000,000",
+    "deadline": "2026-10-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Programas de VIH/SIDA, tuberculosis y malaria en Bolivia. Ciclos trienales. Canal Ministerio de Salud.",
+    "link": "https://www.theglobalfund.org",
+    "score": 58,
+    "tags": [
+      "Salud",
+      "VIH",
+      "Bolivia",
+      "TB"
+    ]
+  },
+  {
+    "id": "wellcome",
+    "titulo": "Wellcome Trust Salud Global",
+    "donante": "Wellcome Trust / UK",
+    "area": "Salud",
+    "monto": "£100,000–£2,000,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Global",
+    "continente": "Europa",
+    "ingles": true,
+    "desc": "Investigación en salud, enfermedades tropicales y bienestar mental. Bolivia elegible por carga tropical.",
+    "link": "https://wellcome.org",
+    "score": 62,
+    "tags": [
+      "Wellcome",
+      "Salud",
+      "Investigación",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "pandemic_fund",
+    "titulo": "The Pandemic Fund Bolivia",
+    "donante": "Pandemic Fund / G20",
+    "area": "Salud",
+    "monto": "$5,000,000–$50,000,000",
+    "deadline": "2026-12-31",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Global",
+    "ingles": true,
+    "desc": "Fortalecimiento de sistemas de salud y preparación pandémica en Bolivia. Canal multilateral.",
+    "link": "https://www.thepandemicfund.org",
+    "score": 50,
+    "tags": [
+      "Salud",
+      "Pandemias",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "alianza_francesa",
+    "titulo": "Alianza Francesa Bolivia — Cultura y Arte",
+    "donante": "Alliance Française / Francia",
+    "area": "Cultura",
+    "monto": "€2,000–$20,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Residencias artísticas, exposiciones, teatro, danza y proyectos culturales franco-bolivianos.",
+    "link": "https://www.alianzafrancesa.org.bo",
+    "score": 68,
+    "tags": [
+      "Francia",
+      "Cultura",
+      "Arte",
+      "Teatro",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "spain_cultura",
+    "titulo": "Embajada España — Acción Cultural Bolivia",
+    "donante": "Embajada de España / Acción Cultural España",
+    "area": "Cultura",
+    "monto": "€5,000–$80,000",
+    "deadline": "2026-11-30",
+    "estado": "open",
+    "pais": "Bolivia",
+    "continente": "Europa",
+    "ingles": false,
+    "desc": "Proyectos de cultura, patrimonio, artes y lengua española en Bolivia. Convocatorias AC/E.",
+    "link": "https://www.accioncultural.es",
+    "score": 70,
+    "tags": [
+      "España",
+      "Cultura",
+      "Patrimonio",
+      "Arte",
+      "Bolivia"
+    ]
+  },
+  {
+    "id": "rockefeller",
+    "titulo": "Rockefeller Foundation Resiliencia Global",
+    "donante": "Rockefeller Foundation",
+    "area": "Salud",
+    "monto": "$500,000–$5,000,000",
+    "deadline": "2027-01-31",
+    "estado": "upcoming",
+    "pais": "Global",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Resiliencia de sistemas de salud, alimentación y clima en países vulnerables. Bolivia elegible.",
+    "link": "https://www.rockefellerfoundation.org",
+    "score": 56,
+    "tags": [
+      "Rockefeller",
+      "Salud",
+      "Clima",
+      "Resiliencia"
+    ]
+  },
+  {
+    "id": "bloomberg",
+    "titulo": "Bloomberg Philanthropies Salud y Ambiente",
+    "donante": "Bloomberg Philanthropies",
+    "area": "Salud",
+    "monto": "$500,000–$5,000,000",
+    "deadline": "2027-01-31",
+    "estado": "upcoming",
+    "pais": "Global",
+    "continente": "América del Norte",
+    "ingles": true,
+    "desc": "Control de tabaco, energía limpia, transporte seguro y ciudades sostenibles. Bolivia elegible.",
+    "link": "https://www.bloomberg.org",
+    "score": 56,
+    "tags": [
+      "Bloomberg",
+      "Salud",
+      "Ambiente",
+      "Ciudades"
+    ]
+  }
+];
+
+
+
+// Helper: normalize users storage (array or object)
+function getConsultorEmails(){
+  var raw=JSON.parse(localStorage.getItem('gbp_users')||'[]');
+  if(Array.isArray(raw)) return raw.filter(function(u){return u.rol!=='admin';}).map(function(u){return u.email;});
+  return Object.keys(raw).filter(function(e){return raw[e].rol!=='admin';});
+}
+function getGrantsDB(){
+  var custom=JSON.parse(localStorage.getItem('gbp_grants_custom')||'[]');
+  return GRANTS_DB_BASE.concat(custom).filter(function(g){return g.estado!=='Inactivo';});
+}
+var GRANTS_DB=getGrantsDB();
+
+// BOLIVIA PARTNERS
+var PARTNERS_DB=[
+  {nombre:"Fundación ACLO",tipo:"ONG",areas:["Educación","Alimentos","Agua"],depto:"Sucre",contacto:"aclo.org.bo",desc:"Radio educativa y desarrollo comunitario rural"},
+  {nombre:"CEDLA",tipo:"Fundación",areas:["Derechos Humanos","Emprendimiento"],depto:"La Paz",contacto:"cedla.org",desc:"Centro de estudios laborales y desarrollo social"},
+  {nombre:"CIPCA",tipo:"ONG",areas:["Alimentos","Medio Ambiente","Agua"],depto:"La Paz",contacto:"cipca.org.bo",desc:"Centro de investigación y promoción del campesinado"},
+  {nombre:"Fundación TIERRA",tipo:"Fundación",areas:["Alimentos","Medio Ambiente","Derechos Humanos"],depto:"La Paz",contacto:"ftierra.org",desc:"Derechos agrarios y desarrollo rural"},
+  {nombre:"CERES",tipo:"Fundación",areas:["Educación","Emprendimiento"],depto:"Cochabamba",contacto:"ceres.org.bo",desc:"Centro de estudios de la realidad económica y social"},
+  {nombre:"Plan International Bolivia",tipo:"ONG",areas:["Género","Educación","Derechos Humanos"],depto:"La Paz",contacto:"plan-international.org",desc:"Derechos de niñas y mujeres jóvenes"},
+  {nombre:"Save the Children Bolivia",tipo:"ONG",areas:["Educación","Salud","Derechos Humanos"],depto:"La Paz",contacto:"savethechildren.org",desc:"Protección y desarrollo de la niñez"},
+  {nombre:"CARE Bolivia",tipo:"ONG",areas:["Género","Agua","Alimentos"],depto:"Cochabamba",contacto:"care.org.bo",desc:"Desarrollo rural y equidad de género"},
+  {nombre:"Oxfam Bolivia",tipo:"ONG",areas:["Alimentos","Derechos Humanos","Género"],depto:"La Paz",contacto:"oxfam.org/bolivia",desc:"Justicia social y lucha contra la pobreza"},
+  {nombre:"SNV Bolivia",tipo:"ONG",areas:["Agua","Alimentos","Emprendimiento"],depto:"La Paz",contacto:"snv.org",desc:"Agua, saneamiento y agronegocios inclusivos"},
+  {nombre:"Swisscontact Bolivia",tipo:"Fundación",areas:["Emprendimiento","Innovación","Educación"],depto:"La Paz",contacto:"swisscontact.org",desc:"Formación profesional y desarrollo de MIPYMES"},
+  {nombre:"PROFIN",tipo:"Fundación",areas:["Emprendimiento","Agua"],depto:"La Paz",contacto:"profin.org.bo",desc:"Finanzas rurales y acceso a servicios financieros"},
+  {nombre:"IBIS Bolivia",tipo:"ONG",areas:["Derechos Humanos","Educación"],depto:"La Paz",contacto:"ibis.org",desc:"Derechos de pueblos indígenas y educación intercultural"},
+  {nombre:"Fundación ARU",tipo:"Fundación",areas:["Educación","Emprendimiento"],depto:"La Paz",contacto:"aru.org.bo",desc:"Investigación aplicada para el desarrollo"},
+  {nombre:"Visión Mundial Bolivia",tipo:"ONG",areas:["Salud","Educación","Alimentos"],depto:"Cochabamba",contacto:"visionmundial.org.bo",desc:"Desarrollo integral con enfoque en niñez"},
+  {nombre:"Médicos Sin Fronteras",tipo:"ONG",areas:["Salud"],depto:"La Paz",contacto:"msf.org",desc:"Asistencia médica de emergencia"},
+  {nombre:"Fundación SARTAWI",tipo:"Fundación",areas:["Emprendimiento","Alimentos"],depto:"La Paz",contacto:"sartawi.org",desc:"Microfinanzas y apoyo a productores rurales"},
+  {nombre:"LIDEMA",tipo:"Red",areas:["Medio Ambiente"],depto:"La Paz",contacto:"lidema.org.bo",desc:"Liga de Defensa del Medio Ambiente — red de 20 ONGs"},
+  {nombre:"FOBOMADE",tipo:"Red",areas:["Medio Ambiente","Agua"],depto:"La Paz",contacto:"fobomade.org.bo",desc:"Foro Boliviano sobre Medio Ambiente y Desarrollo"},
+  {nombre:"CEBEM",tipo:"Fundación",areas:["Medio Ambiente","Innovación"],depto:"La Paz",contacto:"cebem.org",desc:"Centro Boliviano de Estudios Multidisciplinarios"},
+  {nombre:"UMSA",tipo:"Universidad",areas:["Educación","Innovación","Salud"],depto:"La Paz",contacto:"umsa.bo",desc:"Principal universidad pública — 13 facultades"},
+  {nombre:"UMSS",tipo:"Universidad",areas:["Educación","Agua","Alimentos"],depto:"Cochabamba",contacto:"umss.edu.bo",desc:"Investigación agropecuaria y recursos hídricos"},
+  {nombre:"UAGRM",tipo:"Universidad",areas:["Educación","Innovación","Emprendimiento"],depto:"Santa Cruz",contacto:"uagrm.edu.bo",desc:"Mayor universidad de Santa Cruz, fuerte en agroindustria"},
+  {nombre:"PROINPA",tipo:"Fundación",areas:["Alimentos","Innovación"],depto:"Cochabamba",contacto:"proinpa.org",desc:"Investigación y promoción de Productos Andinos"},
+  {nombre:"ANED",tipo:"ONG",areas:["Emprendimiento","Género"],depto:"La Paz",contacto:"aned.org.bo",desc:"Microcrédito y apoyo empresarial a mujeres"},
+  {nombre:"Coordinadora de la Mujer",tipo:"Red",areas:["Género","Derechos Humanos"],depto:"La Paz",contacto:"coordinadoradelamujer.org.bo",desc:"Red de organizaciones de mujeres"},
+  {nombre:"CEFREC",tipo:"ONG",areas:["Cultura","Derechos Humanos"],depto:"La Paz",contacto:"cefrec.org",desc:"Centro de Formación y Realización Cinematográfica Indígena"},
+  {nombre:"Fundación Machaqa Amawta",tipo:"Fundación",areas:["Educación","Cultura"],depto:"La Paz",contacto:"machaqa.edu.bo",desc:"Educación intercultural bilingüe en comunidades aimaras"},
+  {nombre:"Cáritas Bolivia",tipo:"ONG",areas:["Alimentos","Salud","Agua"],depto:"La Paz",contacto:"caritasbolivia.org",desc:"Desarrollo humano integral"},
+  {nombre:"SEDEDE",tipo:"ONG",areas:["Medio Ambiente","Agua"],depto:"Beni",contacto:"sedede.org",desc:"Desarrollo sostenible en la Amazonía boliviana"},
+  {nombre:"ANAPQUI",tipo:"Red",areas:["Alimentos","Emprendimiento"],depto:"Oruro",contacto:"anapqui.org.bo",desc:"Producción y comercio justo de quinua orgánica"},
+  {nombre:"Fundación Milenio",tipo:"Fundación",areas:["Emprendimiento","Educación"],depto:"La Paz",contacto:"fundacion-milenio.org",desc:"Análisis económico y políticas públicas"},
+  {nombre:"GREPP",tipo:"ONG",areas:["Salud","Género"],depto:"Cochabamba",contacto:"grepp.org.bo",desc:"Género, reproducción y salud sexual"},
+  {nombre:"Swissaid Bolivia",tipo:"ONG",areas:["Alimentos","Medio Ambiente","Agua"],depto:"Cochabamba",contacto:"swissaid.org",desc:"Soberanía alimentaria y gestión de recursos naturales"},
+  {nombre:"AYNI Bolivia",tipo:"ONG",areas:["Innovación","Emprendimiento"],depto:"La Paz",contacto:"ayni.bo",desc:"Innovación social y tecnología para el desarrollo"},
+  {nombre:"Fundación SOLYDES",tipo:"Fundación",areas:["Salud","Educación"],depto:"La Paz",contacto:"solydes.org.bo",desc:"Salud comunitaria y desarrollo social"},
+  {nombre:"PLAGBOL",tipo:"Fundación",areas:["Medio Ambiente","Alimentos"],depto:"La Paz",contacto:"plagbol.org.bo",desc:"Agroecología y control de plaguicidas"},
+  {nombre:"IBCE",tipo:"Fundación",areas:["Emprendimiento","Alimentos"],depto:"Santa Cruz",contacto:"ibce.org.bo",desc:"Comercio exterior y agroindustria exportadora"},
+  {nombre:"CIDDEBENI",tipo:"ONG",areas:["Derechos Humanos","Medio Ambiente"],depto:"Beni",contacto:"ciddebeni.org",desc:"Derechos indígenas y amazónicos"},
+  {nombre:"PRODERHAM",tipo:"ONG",areas:["Agua","Alimentos"],depto:"Tarija",contacto:"proderham.org",desc:"Agua y riego en el Chaco tarijeño"},
+  {nombre:"THOA",tipo:"ONG",areas:["Cultura","Derechos Humanos"],depto:"La Paz",contacto:"thoa-bolivia.org",desc:"Taller de Historia Oral Andina"},
+  {nombre:"Red de Semillas Bolivia",tipo:"Red",areas:["Alimentos","Medio Ambiente"],depto:"Cochabamba",contacto:"redsemillas.org.bo",desc:"Agrobiodiversidad y soberanía alimentaria"},
+  {nombre:"AMUPEI",tipo:"Red",areas:["Género","Derechos Humanos"],depto:"La Paz",contacto:"amupei.org",desc:"Plataforma de incidencia política feminista"},
+  {nombre:"ADESPROC Libertad GLBT",tipo:"ONG",areas:["Derechos Humanos","Género"],depto:"La Paz",contacto:"adesproc.org.bo",desc:"Derechos LGBTQ+ en Bolivia"},
+  {nombre:"Fundación Cultural BCB",tipo:"Fundación",areas:["Cultura","Educación"],depto:"La Paz",contacto:"bcb.gob.bo",desc:"Preservación cultural y patrimonio histórico"},
+  {nombre:"FTE Santa Cruz",tipo:"Fundación",areas:["Emprendimiento","Innovación"],depto:"Santa Cruz",contacto:"fte.org.bo",desc:"Desarrollo empresarial y emprendimiento juvenil"},
+  {nombre:"CIPCA Cordillera",tipo:"ONG",areas:["Alimentos","Medio Ambiente"],depto:"Santa Cruz",contacto:"cipca.org.bo",desc:"Desarrollo en chaco y tierras bajas"},
+  {nombre:"Ayuda en Acción Bolivia",tipo:"ONG",areas:["Educación","Alimentos"],depto:"La Paz",contacto:"ayudaenaccion.org",desc:"Desarrollo integral de niñez rural"},
+  {nombre:"CEADL",tipo:"ONG",areas:["Emprendimiento","Educación"],depto:"La Paz",contacto:"ceadl.org.bo",desc:"Desarrollo local y formación cívica"}
+];
+
+var currentUser=null,currentProfile=null,savedGrants=[],sidebarOpen=true;
+
+function initializeUserSession(email,rol){
+  currentUser={email:email,rol:rol};
+  GRANTS_DB=getGrantsDB();
+  document.getElementById('topbarUser').textContent=email+(rol==='admin'?' (Admin)':'');
+  document.getElementById('mainApp').style.display='block';
+  document.getElementById('gateContainer').style.display='none';
+  if(rol==='admin'){
+    document.getElementById('adminPanel').style.display='block';
+    document.getElementById('mainContent').style.display='none';
+    document.getElementById('sidebar').style.display='none';
+    renderAdminTab('consultores');
+  } else {
+    loadUserProfile(email);
+    buildAreaChecks();
+    renderDashboard();
+    showView('dashboard');
+    poblarExportSelect();
+  }
+}
+
+function loadUserProfile(email){
+  var raw=localStorage.getItem('gbp_data_'+email);
+  if(raw){try{currentProfile=JSON.parse(raw);savedGrants=currentProfile.savedGrants||[];}catch(e){currentProfile={};}}
+  else{currentProfile={};}
+}
+
+function guardarPerfil(){
+  if(!currentUser)return;
+  var areas=[].slice.call(document.querySelectorAll('#areasCheck input:checked')).map(function(c){return c.value;});
+  var caps={};
+  document.querySelectorAll('#capCheck input:checked').forEach(function(c){caps[c.value]=true;});
+  var p={
+    nombre:document.getElementById('pNombre').value.trim(),
+    tipoEntidad:document.getElementById('pTipo').value,
+    anios:document.getElementById('pAnios').value,
+    english:document.getElementById('pEnglish').value,
+    monto:document.getElementById('pMonto').value,
+    donantes:document.getElementById('pDonantes').value,
+    ubicacion:document.getElementById('pUbicacion').value,
+    areas:areas,capacidades:caps,
+    cv:document.getElementById('pCV').value,
+    savedGrants:savedGrants,
+    updatedAt:new Date().toISOString()
+  };
+  currentProfile=p;
+  localStorage.setItem('gbp_data_'+currentUser.email,JSON.stringify(p));
+  showToast('Perfil guardado');
+  renderDashboard();
+}
+
+function setValue(id,val){var el=document.getElementById(id);if(el)el.value=val;}
+
+function cargarFormularioPerfil(){
+  if(!currentProfile)return;
+  var p=currentProfile;
+  setValue('pNombre',p.nombre||'');setValue('pTipo',p.tipoEntidad||'');
+  setValue('pAnios',p.anios||'');setValue('pEnglish',p.english||'');
+  setValue('pMonto',p.monto||'');setValue('pDonantes',p.donantes||'');
+  setValue('pUbicacion',p.ubicacion||'');
+  if(p.cv)setValue('pCV',p.cv);
+  var areas=p.areas||[];
+  document.querySelectorAll('#areasCheck input').forEach(function(c){c.checked=areas.indexOf(c.value)>=0;});
+  var caps=p.capacidades||{};
+  document.querySelectorAll('#capCheck input').forEach(function(c){c.checked=!!caps[c.value];});
+}
+
+function buildAreaChecks(){
+  var AREAS=['Educación','Emprendimiento','Innovación','Derechos Humanos','Medio Ambiente','Género','Agua','Alimentos','Cultura','Salud','Múltiple'];
+  var CAPS=['Formulación de proyectos','Monitoreo y Evaluación','Gestión financiera','Comunicación','Investigación','Trabajo comunitario','Incidencia política','Gestión ambiental','Igualdad de género','Salud pública','Tecnología','Educación'];
+  document.getElementById('areasCheck').innerHTML=AREAS.map(function(a){return '<label style="color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" value="'+a+'"> '+a+'</label>';}).join('');
+  document.getElementById('capCheck').innerHTML=CAPS.map(function(c){return '<label style="color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" value="'+c+'"> '+c+'</label>';}).join('');
+}
+
+function analizarCV(){
+  var cv=document.getElementById('pCV').value;
+  if(!cv.trim()){showToast('Pega tu CV primero','#dc2626');return;}
+  var result=document.getElementById('cvAnalisisResult');
+  result.innerHTML='<p style="color:#f59e0b">Analizando...</p>';
+  var extracted={};
+  var aniosMatch=cv.match(/(\d+)\s*(años?|years?)\s*(de\s*)?(experiencia|experience)/i);
+  if(aniosMatch)extracted.anios=aniosMatch[1];
+  if(/c[12]|proficien|advanced|avanzado/i.test(cv))extracted.english='Avanzado (C1-C2)';
+  else if(/b[12]|intermediate|intermedio/i.test(cv))extracted.english='Intermedio (B1-B2)';
+  else if(/a[12]|basic|básico|beginner/i.test(cv))extracted.english='Básico (A1-A2)';
+  var donors=[];
+  ['USAID','GIZ','Unión Europea','PNUD','UNDP','UNICEF','ONU','UN','Banco Mundial','BID','COSUDE','DFID','FCDO','Ford','MacArthur','Hilton','Packard','Mott','Embajada','Embassy','Kellogg','Tinker','KOICA','JICA','CAF','Avina','OSF','OMS','OPS','FAO','IFAD','UNFPA'].forEach(function(d){if(new RegExp(d,'i').test(cv))donors.push(d);});
+  if(donors.length)extracted.donantes=donors.join(', ');
+  var montoMatch=cv.match(/\$[\s]*([\d,]+)/);
+  if(montoMatch)extracted.monto=montoMatch[1].replace(',','');
+  var areaMap={'Educación':['educaci','capacita','formaci','enseñan','school'],'Medio Ambiente':['ambiente','ecolog','forestal','climate','biodiversi'],'Salud':['salud','health','médic','hospital','nutrici'],'Género':['género','mujer','feminis','gender','igualdad'],'Agua':['agua','water','saneamiento','WASH','riego'],'Alimentos':['aliment','food','agrícol','agropecuari','quinua'],'Derechos Humanos':['derechos','human rights','indígena','DDHH','justicia'],'Emprendimiento':['emprend','microempresa','pymes','finanzas','crédito'],'Innovación':['innovaci','tecnolog','digital','software','startup'],'Cultura':['cultura','arte','patrimonio','teatro','cine']};
+  var detectedAreas=[];
+  Object.keys(areaMap).forEach(function(area){if(areaMap[area].some(function(k){return new RegExp(k,'i').test(cv);}))detectedAreas.push(area);});
+  if(detectedAreas.length)extracted.areas=detectedAreas;
+  if(extracted.anios)document.getElementById('pAnios').value=extracted.anios;
+  if(extracted.english)document.getElementById('pEnglish').value=extracted.english;
+  if(extracted.donantes)document.getElementById('pDonantes').value=extracted.donantes;
+  if(extracted.monto)document.getElementById('pMonto').value=extracted.monto;
+  if(extracted.areas)document.querySelectorAll('#areasCheck input').forEach(function(c){c.checked=extracted.areas.indexOf(c.value)>=0;});
+  var html='<div style="background:#1e3a5f;border-radius:8px;padding:12px;font-size:.85rem"><p style="color:#f59e0b;font-weight:700;margin-bottom:8px">Análisis completado:</p>';
+  if(extracted.anios)html+='<p style="color:#86efac">Años exp.: '+extracted.anios+'</p>';
+  if(extracted.english)html+='<p style="color:#86efac">Inglés: '+extracted.english+'</p>';
+  if(extracted.donantes)html+='<p style="color:#86efac">Donantes: '+extracted.donantes+'</p>';
+  if(extracted.areas)html+='<p style="color:#86efac">Áreas: '+extracted.areas.join(', ')+'</p>';
+  if(!Object.keys(extracted).length)html+='<p style="color:#fca5a5">No se detectaron datos. Completa manualmente.</p>';
+  html+='<p style="color:#94a3b8;margin-top:8px;font-size:.8rem">Revisa y ajusta los campos antes de guardar.</p></div>';
+  result.innerHTML=html;
+}
+
+function scoreGrant(grant,profile){
+  if(!profile)return 0;
+  var score=0;
+  var areas=profile.areas||[];
+  var anios=parseInt(profile.anios||0);
+  var english=profile.english||'';
+  var monto=parseFloat((profile.monto||'0').replace(/,/g,''));
+  var gArea=grant.area||'';
+  if(areas.indexOf(gArea)>=0||gArea==='Múltiple')score+=25;
+  else if(areas.some(function(a){return grant.tags&&grant.tags.indexOf(a)>=0;}))score+=12;
+  score+=20;
+  var caps=Object.keys(profile.capacidades||{}).length;
+  if(caps>=6)score+=20;else if(caps>=3)score+=12;else score+=5;
+  if(grant.monto&&monto>0){
+    var gM=parseFloat(grant.monto.replace(/[^0-9.]/g,''));
+    if(!isNaN(gM)){if(monto>=gM*0.5)score+=15;else if(monto>=gM*0.1)score+=8;else score+=3;}
+    else score+=10;
+  }else score+=10;
+  if(grant.deadline&&grant.deadline!=='Permanente'){
+    var dl=new Date(grant.deadline);var now=new Date();
+    var diff=(dl-now)/(1000*60*60*24);
+    if(diff>90)score+=10;else if(diff>30)score+=6;else if(diff>0)score+=3;
+  }else score+=8;
+  if(anios>=5)score+=10;else if(anios>=2)score+=6;else score+=2;
+  if(grant.ingles&&(english.indexOf('Avanzado')>=0||english.indexOf('Nativo')>=0))score+=5;
+  else if(grant.ingles&&english.indexOf('Intermedio')>=0)score+=2;
+  else if(!grant.ingles)score+=3;
+  return Math.min(100,Math.round(score));
+}
+
+function calcPotencialConsultor(p){
+  var score=0;
+  if(p.nombre)score+=10;
+  if(p.areas&&p.areas.length>0)score+=20;
+  if(p.english&&p.english.indexOf('Avanzado')>=0)score+=15;
+  else if(p.english&&p.english.indexOf('Intermedio')>=0)score+=8;
+  if(p.anios&&parseInt(p.anios)>=5)score+=20;
+  else if(p.anios&&parseInt(p.anios)>=2)score+=12;
+  if(p.donantes)score+=15;
+  if(p.capacidades&&Object.keys(p.capacidades).length>=5)score+=20;
+  return Math.min(100,score);
+}
+
+function generarRecomendaciones(p){
+  var recs=[];
+  if(!p.english||p.english.indexOf('Básico')>=0)recs.push('Mejorar nivel de inglés a B2+ para acceder a USAID, GIZ y Embajada Canadá');
+  if(!p.anios||parseInt(p.anios)<3)recs.push('Documentar experiencia previa con indicadores de resultados');
+  if(!p.donantes)recs.push('Registrar todos los donantes previos — clave para el scoring');
+  if(!p.areas||p.areas.length<2)recs.push('Ampliar áreas temáticas para matchear más convocatorias');
+  if(!p.capacidades||Object.keys(p.capacidades).length<4)recs.push('Completar evaluación de capacidades institucionales');
+  if(!p.monto)recs.push('Registrar montos gestionados — criterio de elegibilidad para grants grandes');
+  if(!p.tipoEntidad)recs.push('Especificar tipo de entidad');
+  if(!recs.length)recs.push('Perfil completo. Mantener actualizado.');
+  return recs;
+}
+
+function renderDashboard(){
+  if(!currentUser||currentUser.rol==='admin')return;
+  GRANTS_DB=getGrantsDB();
+  var p=currentProfile||{};
+  var topGrants=GRANTS_DB.map(function(g){return Object.assign({},g,{_score:scoreGrant(g,p)});}).sort(function(a,b){return b._score-a._score;});
+  var abiertos=GRANTS_DB.filter(function(g){return g.estado==='Abierto';}).length;
+  var matchAlto=topGrants.filter(function(g){return g._score>=70;}).length;
+  var potencial=calcPotencialConsultor(p);
+  document.getElementById('dashStats').innerHTML=[
+    {label:'Grants Disponibles',val:GRANTS_DB.length,icon:'📋',color:'#3b82f6'},
+    {label:'Convocatorias Abiertas',val:abiertos,icon:'✅',color:'#10b981'},
+    {label:'Match Alto (≥70%)',val:matchAlto,icon:'⭐',color:'#f59e0b'},
+    {label:'Mi Potencial',val:potencial+'%',icon:'🎯',color:'#8b5cf6'},
+    {label:'Guardados',val:savedGrants.length,icon:'❤️',color:'#ec4899'},
+    {label:'Socios Bolivia',val:PARTNERS_DB.length,icon:'🤝',color:'#06b6d4'}
+  ].map(function(s){return '<div style="background:#1e293b;border-radius:12px;padding:18px;border-left:4px solid '+s.color+'"><div style="font-size:1.8rem">'+s.icon+'</div><div style="font-size:1.8rem;font-weight:700;color:'+s.color+';margin:4px 0">'+s.val+'</div><div style="color:#94a3b8;font-size:.8rem">'+s.label+'</div></div>';}).join('');
+  var html='<div class="card"><h3 class="card-title">Top 5 Grants para Tu Perfil</h3>';
+  if(!p.areas||!p.areas.length){html+='<p style="color:#94a3b8">Completa tu perfil para ver grants personalizados. <button onclick="showView('perfil')" class="btn-secondary" style="margin-left:8px">Completar perfil</button></p>';}
+  else{html+=topGrants.slice(0,5).map(function(g){return grantCardSmall(g,g._score);}).join('');}
+  html+='</div>';
+  document.getElementById('dashGrants').innerHTML=html;
+  var pAreas=p.areas||[];
+  var partners=pAreas.length?PARTNERS_DB.filter(function(s){return s.areas.some(function(a){return pAreas.indexOf(a)>=0;});}).slice(0,3):PARTNERS_DB.slice(0,3);
+  var ph='<div class="card"><h3 class="card-title">Socios Recomendados</h3>';
+  ph+=partners.map(function(s){return '<div style="background:#0f2744;border-radius:8px;padding:12px;margin-bottom:8px"><div style="color:#f1f5f9;font-weight:600">'+s.nombre+'</div><div style="color:#94a3b8;font-size:.8rem">'+s.tipo+' · '+s.depto+' · '+s.areas.join(', ')+'</div><div style="color:#64748b;font-size:.78rem;margin-top:4px">'+s.desc+'</div></div>';}).join('');
+  ph+='</div>';
+  document.getElementById('dashPartners').innerHTML=ph;
+}
+
+function grantCardSmall(g,score){
+  var isSaved=savedGrants.indexOf(g.id)>=0;
+  var sc=score>=80?'#10b981':score>=60?'#f59e0b':'#94a3b8';
+  return '<div style="background:#0f2744;border-radius:8px;padding:14px;margin-bottom:10px;border-left:3px solid '+sc+'"><div style="display:flex;justify-content:space-between;align-items:start"><div style="flex:1"><div style="color:#f1f5f9;font-weight:600;font-size:.95rem">'+g.titulo+'</div><div style="color:#94a3b8;font-size:.8rem;margin-top:2px">'+g.donante+' · '+g.area+' · '+g.continente+'</div><div style="color:#64748b;font-size:.78rem;margin-top:4px">'+g.monto+' · Deadline: '+(g.deadline||'Ver conv.')+'</div></div><div style="text-align:right;margin-left:12px"><div style="font-size:1.3rem;font-weight:700;color:'+sc+'">'+score+'%</div><div style="color:#64748b;font-size:.7rem">match</div><button onclick="toggleSaveGrant(''+g.id+'')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-top:4px">'+(isSaved?'❤️':'🤍')+'</button></div></div>'+(g.link?'<a href="'+g.link+'" target="_blank" style="color:#60a5fa;font-size:.78rem;text-decoration:none">Ver convocatoria →</a>':'')+'</div>';
+}
+
+function filtrarGrants(){
+  GRANTS_DB=getGrantsDB();
+  var q=(document.getElementById('searchQ').value||'').toLowerCase();
+  var area=document.getElementById('searchArea').value;
+  var cont=document.getElementById('searchCont').value;
+  var estado=document.getElementById('searchEstado').value;
+  var filtered=GRANTS_DB.filter(function(g){
+    if(q&&!(g.titulo+g.donante+(g.desc||'')+(g.area||'')).toLowerCase().includes(q))return false;
+    if(area&&g.area!==area)return false;
+    if(cont&&g.continente!==cont)return false;
+    if(estado&&g.estado!==estado)return false;
+    return true;
+  });
+  var p=currentProfile||null;
+  filtered=filtered.map(function(g){return Object.assign({},g,{_score:scoreGrant(g,p)});}).sort(function(a,b){return b._score-a._score;});
+  var html='<div style="color:#94a3b8;font-size:.85rem;margin-bottom:12px">'+filtered.length+' grants encontrados</div>';
+  html+=filtered.map(function(g){return grantCardFull(g,g._score);}).join('');
+  document.getElementById('grantsList').innerHTML=html;
+}
+
+function grantCardFull(g,score){
+  var isSaved=savedGrants.indexOf(g.id)>=0;
+  var sc=score>=80?'#10b981':score>=60?'#f59e0b':'#94a3b8';
+  var ec=g.estado==='Abierto'?'#10b981':g.estado==='Próximo'?'#f59e0b':'#94a3b8';
+  return '<div class="card" style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:8px"><div style="flex:1;min-width:200px"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><span style="background:'+ec+';color:#000;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700">'+g.estado+'</span><span style="background:#1e3a5f;color:#93c5fd;padding:2px 8px;border-radius:12px;font-size:.72rem">'+g.area+'</span><span style="background:#1e293b;color:#94a3b8;padding:2px 8px;border-radius:12px;font-size:.72rem">'+g.continente+'</span>'+(g.ingles?'<span style="background:#4c1d95;color:#c4b5fd;padding:2px 8px;border-radius:12px;font-size:.72rem">Inglés req.</span>':'')+'</div><div style="color:#f1f5f9;font-weight:700;font-size:1rem;margin-bottom:4px">'+g.titulo+'</div><div style="color:#60a5fa;font-size:.85rem;margin-bottom:6px">'+g.donante+'</div><div style="color:#94a3b8;font-size:.82rem;margin-bottom:8px">'+(g.desc||'')+'</div><div style="display:flex;gap:16px;flex-wrap:wrap"><span style="color:#86efac;font-size:.82rem">'+g.monto+'</span><span style="color:#fca5a5;font-size:.82rem">Deadline: '+(g.deadline||'Ver conv.')+'</span>'+(g.link?'<a href="'+g.link+'" target="_blank" style="color:#60a5fa;font-size:.82rem">Ver convocatoria →</a>':'')+'</div></div><div style="text-align:center;min-width:80px"><div style="font-size:2rem;font-weight:700;color:'+sc+'">'+score+'%</div><div style="color:#64748b;font-size:.72rem;margin-bottom:8px">match</div><button onclick="toggleSaveGrant(''+g.id+'')" style="background:none;border:none;font-size:1.5rem;cursor:pointer;display:block;margin:0 auto">'+(isSaved?'❤️':'🤍')+'</button><button onclick="prepararExport(''+g.id+'')" style="background:#1e3a5f;color:#93c5fd;border:none;padding:4px 8px;border-radius:6px;font-size:.72rem;cursor:pointer;margin-top:4px">Postular</button></div></div></div>';
+}
+
+function toggleSaveGrant(gid){
+  var idx=savedGrants.indexOf(gid);
+  if(idx>=0)savedGrants.splice(idx,1);else savedGrants.push(gid);
+  if(currentUser&&currentProfile){currentProfile.savedGrants=savedGrants;localStorage.setItem('gbp_data_'+currentUser.email,JSON.stringify(currentProfile));}
+  filtrarGrants();renderMisGrants();renderDashboard();
+}
+
+function renderMisGrants(){
+  GRANTS_DB=getGrantsDB();
+  if(!savedGrants.length){document.getElementById('misGrantsList').innerHTML='<div class="card"><p style="color:#94a3b8">No has guardado grants aún.</p></div>';return;}
+  var grants=GRANTS_DB.filter(function(g){return savedGrants.indexOf(g.id)>=0;});
+  var p=currentProfile||null;
+  document.getElementById('misGrantsList').innerHTML=grants.map(function(g){return grantCardFull(g,scoreGrant(g,p));}).join('');
+}
+
+function renderRanking(){
+  GRANTS_DB=getGrantsDB();
+  var p=currentProfile||null;
+  var ranked=GRANTS_DB.map(function(g){return Object.assign({},g,{_score:scoreGrant(g,p)});}).sort(function(a,b){return b._score-a._score;});
+  document.getElementById('rankingList').innerHTML=ranked.map(function(g,i){return '<div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:16px"><div style="font-size:1.5rem;font-weight:700;color:'+(i<3?'#f59e0b':'#64748b')+';min-width:36px;text-align:center">#'+(i+1)+'</div><div style="flex:1"><div style="color:#f1f5f9;font-weight:600">'+g.titulo+'</div><div style="color:#94a3b8;font-size:.8rem">'+g.donante+' · '+g.area+' · '+g.continente+'</div></div><div style="font-size:1.5rem;font-weight:700;color:'+(g._score>=70?'#10b981':g._score>=50?'#f59e0b':'#94a3b8')+'">'+g._score+'%</div></div>';}).join('');
+}
+
+function filtrarSocios(){
+  var area=document.getElementById('sociosArea').value;
+  var tipo=document.getElementById('sociosTipo').value;
+  var filtered=PARTNERS_DB.filter(function(s){
+    if(area&&s.areas.indexOf(area)<0)return false;
+    if(tipo&&s.tipo!==tipo)return false;
+    return true;
+  });
+  document.getElementById('sociosList').innerHTML='<div style="color:#94a3b8;font-size:.85rem;margin-bottom:12px">'+filtered.length+' organizaciones</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">'+filtered.map(function(s){return '<div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="background:#1e3a5f;color:#93c5fd;padding:2px 8px;border-radius:12px;font-size:.72rem">'+s.tipo+'</span><span style="color:#64748b;font-size:.72rem">'+s.depto+'</span></div><div style="color:#f1f5f9;font-weight:700;margin-bottom:4px;font-size:.95rem">'+s.nombre+'</div><div style="color:#94a3b8;font-size:.8rem;margin-bottom:6px">'+s.desc+'</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+s.areas.map(function(a){return '<span style="background:#0f2744;color:#60a5fa;padding:2px 6px;border-radius:8px;font-size:.7rem">'+a+'</span>';}).join('')+'</div>'+(s.contacto?'<div style="color:#60a5fa;font-size:.75rem;margin-top:6px">'+s.contacto+'</div>':'')+'</div>';}).join('')+'</div>';
+}
+
+function poblarExportSelect(){
+  var sel=document.getElementById('exportGrantSel');if(!sel)return;
+  GRANTS_DB=getGrantsDB();
+  sel.innerHTML='<option value="">Seleccionar grant...</option>'+GRANTS_DB.map(function(g){return '<option value="'+g.id+'">'+g.titulo+' — '+g.donante+'</option>';}).join('');
+}
+
+function prepararExport(gid){showView('exportar');setTimeout(function(){var s=document.getElementById('exportGrantSel');if(s)s.value=gid;},150);}
+
+function generarWordPostulacion(){
+  var gid=document.getElementById('exportGrantSel').value;
+  if(!gid){showToast('Selecciona un grant','#dc2626');return;}
+  GRANTS_DB=getGrantsDB();
+  var grant=GRANTS_DB.find(function(g){return g.id===gid;});
+  if(!grant){showToast('Grant no encontrado','#dc2626');return;}
+  var p=currentProfile||{};
+  var desc=document.getElementById('exportDesc').value;
+  var objetivo=document.getElementById('exportObjetivo').value;
+  var benef=document.getElementById('exportBenef').value;
+  var monto=document.getElementById('exportMonto').value;
+  var score=scoreGrant(grant,p);
+  var partners=PARTNERS_DB.filter(function(s){return s.areas.some(function(a){return (p.areas||[]).indexOf(a)>=0||a===grant.area;});}).slice(0,3);
+  var fecha=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'long',year:'numeric'});
+  var doc='PROPUESTA DE PROYECTO PARA '+grant.donante.toUpperCase()+'\n'+'='.repeat(70)+'\n\n';
+  doc+='CONVOCATORIA: '+grant.titulo+'\nDONANTE: '+grant.donante+'\nÁREA: '+grant.area+'\nMONTO SOLICITADO: USD '+(monto||'[Por definir]')+'\nFECHA: '+fecha+'\nCOMPATIBILIDAD: '+score+'%\n\n';
+  doc+='I. DATOS DE LA ORGANIZACIÓN\n'+'-'.repeat(50)+'\n';
+  doc+='Nombre: '+(p.nombre||'[Nombre]')+'\nTipo: '+(p.tipoEntidad||'[Tipo]')+'\nPaís de implementación: Bolivia\nUbicación: '+(p.ubicacion||'[Departamento]')+'\nAños exp: '+(p.anios||'N/D')+'\nDonantes previos: '+(p.donantes||'N/D')+'\nInglés: '+(p.english||'N/D')+'\n\n';
+  doc+='II. DESCRIPCIÓN DEL PROYECTO\n'+'-'.repeat(50)+'\n'+(desc||'[Descripción del proyecto]')+'\n\n';
+  doc+='III. OBJETIVO GENERAL\n'+'-'.repeat(50)+'\n'+(objetivo||'[Objetivo general]')+'\n\n';
+  doc+='IV. OBJETIVOS ESPECÍFICOS\n'+'-'.repeat(50)+'\n1. [Objetivo específico 1]\n2. [Objetivo específico 2]\n3. [Objetivo específico 3]\n\n';
+  doc+='V. JUSTIFICACIÓN\n'+'-'.repeat(50)+'\nBolivia presenta alta necesidad en el área de '+grant.area.toLowerCase()+'. La organización cuenta con '+  (p.anios||'N')+ ' años de experiencia y ha trabajado con '+(p.donantes||'donantes internacionales')+'\n\n';
+  doc+='VI. METODOLOGÍA\n'+'-'.repeat(50)+'\nFase 1 (Meses 1-3): Diagnóstico y mapeo\nFase 2 (Meses 4-9): Implementación\nFase 3 (Meses 10-12): Evaluación y sistematización\n\n';
+  doc+='VII. BENEFICIARIOS\n'+'-'.repeat(50)+'\n'+(benef||'[Descripción de beneficiarios]')+'\n\n';
+  doc+='VIII. PRESUPUESTO\n'+'-'.repeat(50)+'\nMonto solicitado: USD '+(monto||'[Monto]')+'\nRango convocatoria: '+grant.monto+'\n\n';
+  doc+='IX. SOCIOS ESTRATÉGICOS EN BOLIVIA\n'+'-'.repeat(50)+'\n';
+  if(partners.length){partners.forEach(function(s){doc+='• '+s.nombre+' ('+s.tipo+', '+s.depto+'): '+s.desc+'\n  Contacto: '+s.contacto+'\n\n';});}
+  else{doc+='[Identificar socios locales]\n\n';}
+  doc+='X. INDICADORES\n'+'-'.repeat(50)+'\n1. [Indicador 1] — Meta: [X]\n2. [Indicador 2] — Meta: [X]\n3. [Indicador 3] — Meta: [X]\n\n';
+  doc+='XI. SOSTENIBILIDAD\n'+'-'.repeat(50)+'\n[Estrategia de sostenibilidad del proyecto]\n\n';
+  doc+='SOBRE ESTA CONVOCATORIA:\n'+(grant.desc||'')+'\nEnlace: '+(grant.link||'[Ver web del donante]')+'\n\n---\nGenerado por GrantsBolivia Pro · '+fecha+'\nCompatibilidad: '+score+'%';
+  var blob=new Blob([doc],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;
+  a.download='Postulacion_'+grant.titulo.replace(/[^a-z0-9]/gi,'_').substring(0,30)+'_'+new Date().toISOString().split('T')[0]+'.txt';
+  a.click();URL.revokeObjectURL(url);
+  showToast('Documento generado y descargado');
+}
+
+function renderAlertas(){
+  GRANTS_DB=getGrantsDB();
+  var now=new Date();
+  var withDays=GRANTS_DB.filter(function(g){return g.deadline&&g.deadline!=='Permanente'&&g.deadline!=='Abierto permanente';}).map(function(g){var dl=new Date(g.deadline);var days=Math.ceil((dl-now)/(1000*60*60*24));return Object.assign({},g,{_days:days});}).filter(function(g){return g._days>0;}).sort(function(a,b){return a._days-b._days;});
+  if(!withDays.length){document.getElementById('alertasList').innerHTML='<div class="card"><p style="color:#94a3b8">No hay deadlines próximas con fecha definida.</p></div>';return;}
+  document.getElementById('alertasList').innerHTML=withDays.map(function(g){var urg=g._days<=30?'#dc2626':g._days<=90?'#f59e0b':'#10b981';return '<div class="card" style="margin-bottom:10px;border-left:4px solid '+urg+'"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div><div style="color:#f1f5f9;font-weight:600">'+g.titulo+'</div><div style="color:#94a3b8;font-size:.82rem">'+g.donante+' · '+g.area+'</div></div><div style="text-align:center"><div style="font-size:1.5rem;font-weight:700;color:'+urg+'">'+g._days+'</div><div style="color:#64748b;font-size:.72rem">días restantes</div><div style="color:#94a3b8;font-size:.75rem">'+g.deadline+'</div></div></div></div>';}).join('');
+}
+
+function generarCodigoPerfil(){
+  if(!currentProfile||!currentUser){showToast('Guarda tu perfil primero','#dc2626');return;}
+  var data={email:currentUser.email,perfil:currentProfile,generado:new Date().toISOString(),version:'GBP2.0'};
+  var code=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  document.getElementById('perfilCodigoOut').value=code;
+  showToast('Código generado. Compártelo con la administradora.');
+}
+
+function copiarCodigoPerfil(){
+  var el=document.getElementById('perfilCodigoOut');
+  if(!el.value){showToast('Genera el código primero','#dc2626');return;}
+  el.select();document.execCommand('copy');showToast('Código copiado al portapapeles');
+}
+
+function showView(name){
+  document.querySelectorAll('.view-section').forEach(function(v){v.style.display='none';});
+  var el=document.getElementById('view-'+name);if(el)el.style.display='block';
+  if(name==='buscar')filtrarGrants();
+  if(name==='ranking')renderRanking();
+  if(name==='mis-grants')renderMisGrants();
+  if(name==='socios')filtrarSocios();
+  if(name==='alertas')renderAlertas();
+  if(name==='perfil'){buildAreaChecks();cargarFormularioPerfil();}
+  if(name==='exportar')poblarExportSelect();
+  if(name==='dashboard')renderDashboard();
+}
+
+function toggleSidebar(){
+  sidebarOpen=!sidebarOpen;
+  var sb=document.getElementById('sidebar');var mc=document.getElementById('mainContent');
+  if(sidebarOpen){sb.style.transform='translateX(0)';mc.style.marginLeft='220px';}
+  else{sb.style.transform='translateX(-220px)';mc.style.marginLeft='0';}
+}
+
+// ADMIN GRANT MANAGEMENT
+function renderAdminGrants(){
+  var custom=JSON.parse(localStorage.getItem('gbp_grants_custom')||'[]');
+  GRANTS_DB=getGrantsDB();
+  var html='<div style="margin-bottom:16px"><button onclick="showAddGrantForm(null,null)" class="btn-primary">+ Agregar Grant</button><span style="color:#94a3b8;font-size:.85rem;margin-left:12px">'+GRANTS_DB.length+' grants activos ('+custom.length+' personalizados)</span></div><div id="addGrantFormWrap"></div><div id="customGrantsList">';
+  if(!custom.length){html+='<p style="color:#94a3b8">Sin grants personalizados. Los 66 grants base siempre están activos.</p>';}
+  else{html+=custom.map(function(g,i){return '<div class="card" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:start;gap:8px"><div style="flex:1"><div style="color:#f1f5f9;font-weight:600">'+g.titulo+'</div><div style="color:#94a3b8;font-size:.8rem">'+g.donante+' · '+g.area+' · '+g.monto+'</div><div style="color:#64748b;font-size:.75rem">'+g.estado+' · '+g.deadline+'</div></div><div style="display:flex;gap:8px"><button onclick="editCustomGrant('+i+')" class="btn-secondary" style="font-size:.75rem;padding:4px 8px">Editar</button><button onclick="deleteCustomGrant('+i+')" style="background:#dc2626;color:#fff;border:none;padding:4px 8px;border-radius:6px;font-size:.75rem;cursor:pointer">Eliminar</button></div></div></div>';}).join('');}
+  html+='</div>';
+  document.getElementById('adminGrantsContent').innerHTML=html;
+}
+
+function showAddGrantForm(existing,idx){
+  var g=existing||{};
+  var areas=['Educación','Emprendimiento','Innovación','Derechos Humanos','Medio Ambiente','Género','Agua','Alimentos','Cultura','Salud','Múltiple'];
+  var conts=['América del Norte','Europa','Asia','América Latina','Global/ONU','África','Oceanía'];
+  document.getElementById('addGrantFormWrap').innerHTML='<div class="card" style="margin-bottom:16px;border:1px solid #3b82f6"><h4 style="color:#93c5fd;margin-bottom:12px">'+(existing?'Editar':'Nuevo')+' Grant</h4><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><label class="field-label">Título</label><input id="agTitulo" class="field-input" value="'+(g.titulo||'')+'"></div><div><label class="field-label">Donante</label><input id="agDonante" class="field-input" value="'+(g.donante||'')+'"></div><div><label class="field-label">Área</label><select id="agArea" class="field-input">'+areas.map(function(a){return '<option'+(g.area===a?' selected':'')+'>'+a+'</option>';}).join('')+'</select></div><div><label class="field-label">Continente</label><select id="agCont" class="field-input">'+conts.map(function(c){return '<option'+(g.continente===c?' selected':'')+'>'+c+'</option>';}).join('')+'</select></div><div><label class="field-label">Monto</label><input id="agMonto" class="field-input" value="'+(g.monto||'')+'" placeholder="USD 50,000-200,000"></div><div><label class="field-label">Deadline</label><input id="agDeadline" class="field-input" value="'+(g.deadline||'')+'" placeholder="2025-09-30 o Permanente"></div><div><label class="field-label">Estado</label><select id="agEstado" class="field-input"><option'+(g.estado==='Abierto'?' selected':'')+'>Abierto</option><option'+(g.estado==='Próximo'?' selected':'')+'>Próximo</option><option'+(g.estado==='Inactivo'?' selected':'')+'>Inactivo</option></select></div><div><label class="field-label">Requiere inglés</label><select id="agIngles" class="field-input"><option value="false"'+(!g.ingles?' selected':'')+'>No</option><option value="true"'+(g.ingles?' selected':'')+'>Sí</option></select></div></div><div style="margin-top:10px"><label class="field-label">Descripción</label><textarea id="agDesc" class="field-input" rows="3">'+(g.desc||'')+'</textarea></div><div><label class="field-label">Link</label><input id="agLink" class="field-input" value="'+(g.link||'')+'" placeholder="https://..."></div><div style="display:flex;gap:8px;margin-top:12px"><button onclick="saveCustomGrant('+(idx!==null&&idx!==undefined?idx:'null')+')" class="btn-primary">Guardar Grant</button><button onclick="document.getElementById('addGrantFormWrap').innerHTML=''" class="btn-secondary">Cancelar</button></div></div>';
+}
+
+function saveCustomGrant(idx){
+  var custom=JSON.parse(localStorage.getItem('gbp_grants_custom')||'[]');
+  var g={id:'custom_'+Date.now(),titulo:document.getElementById('agTitulo').value,donante:document.getElementById('agDonante').value,area:document.getElementById('agArea').value,continente:document.getElementById('agCont').value,monto:document.getElementById('agMonto').value,deadline:document.getElementById('agDeadline').value,estado:document.getElementById('agEstado').value,ingles:document.getElementById('agIngles').value==='true',desc:document.getElementById('agDesc').value,link:document.getElementById('agLink').value,tags:[],source:'admin'};
+  if(!g.titulo||!g.donante){showToast('Título y Donante son requeridos','#dc2626');return;}
+  if(idx!==null&&idx!==undefined&&idx!=='null'){g.id=custom[idx].id;custom[idx]=g;}else custom.push(g);
+  localStorage.setItem('gbp_grants_custom',JSON.stringify(custom));
+  GRANTS_DB=getGrantsDB();renderAdminGrants();showToast('Grant guardado');
+}
+
+function editCustomGrant(i){var custom=JSON.parse(localStorage.getItem('gbp_grants_custom')||'[]');showAddGrantForm(custom[i],i);}
+
+function deleteCustomGrant(i){
+  if(!confirm('¿Eliminar este grant?'))return;
+  var custom=JSON.parse(localStorage.getItem('gbp_grants_custom')||'[]');
+  custom.splice(i,1);localStorage.setItem('gbp_grants_custom',JSON.stringify(custom));
+  GRANTS_DB=getGrantsDB();renderAdminGrants();showToast('Grant eliminado');
+}
+
+function renderAdminTab(tab){
+  var agc=document.getElementById('adminGrantsContent');
+  var atc=document.getElementById('adminTabContent');
+  if(tab==='grants'){if(agc)agc.style.display='block';if(atc)atc.style.display='none';}
+  else{if(agc)agc.style.display='none';if(atc)atc.style.display='block';}
+  document.querySelectorAll('.admin-tab-btn').forEach(function(b){b.classList.remove('active');});
+  var btn=document.querySelector('.admin-tab-btn[data-tab="'+tab+'"]');if(btn)btn.classList.add('active');
+  if(tab==='consultores')renderAdminConsultores();
+  if(tab==='perfiles')renderAdminPerfiles();
+  if(tab==='grants')renderAdminGrants();
+  if(tab==='config')renderAdminConfig();
+  if(tab==='importar')renderAdminImport();
+}
+
+function renderAdminConsultores(){
+  var emails=getConsultorEmails();
+  var wrap=document.getElementById('adminTabContent');
+  if(!emails.length){wrap.innerHTML='<p style="color:#94a3b8">No hay consultores en este dispositivo.</p><p style="color:#64748b;font-size:.82rem;margin-top:8px">Los consultores en otros dispositivos deben exportar su perfil desde la sección Exportar Perfil.</p>';return;}
+  var html='<div style="display:grid;gap:12px">';
+  emails.forEach(function(email){
+    var data=JSON.parse(localStorage.getItem('gbp_data_'+email)||'{}');
+    var pot=calcPotencialConsultor(data);
+    html+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:8px"><div><div style="color:#f1f5f9;font-weight:700">'+(data.nombre||email)+'</div><div style="color:#94a3b8;font-size:.82rem">'+email+'</div><div style="color:#64748b;font-size:.78rem;margin-top:4px">'+(data.tipoEntidad||'')+' · '+(data.ubicacion||'')+' · '+(data.anios||0)+' años</div><div style="color:#64748b;font-size:.78rem">Áreas: '+((data.areas||[]).join(', ')||'No definidas')+'</div></div><div style="text-align:center"><div style="font-size:2rem;font-weight:700;color:'+(pot>=70?'#10b981':pot>=40?'#f59e0b':'#ef4444')+'">'+pot+'%</div><div style="color:#64748b;font-size:.7rem">potencial</div><button onclick="verDetalleConsultor(''+email+'')" class="btn-secondary" style="font-size:.72rem;padding:4px 8px;margin-top:6px">Ver perfil</button></div></div></div>';
+  });
+  html+='</div><div style="margin-top:16px;display:flex;gap:8px"><button onclick="exportUsersCSV()" class="btn-secondary">Exportar CSV</button><button onclick="exportUsersWord()" class="btn-secondary">Exportar Reporte</button></div>';
+  wrap.innerHTML=html;
+}
+
+function verDetalleConsultor(email){
+  var data=JSON.parse(localStorage.getItem('gbp_data_'+email)||'{}');
+  var pot=calcPotencialConsultor(data);
+  GRANTS_DB=getGrantsDB();
+  var topG=GRANTS_DB.map(function(g){return Object.assign({},g,{_score:scoreGrant(g,data)});}).sort(function(a,b){return b._score-a._score;}).slice(0,5);
+  var recs=generarRecomendaciones(data);
+  var partners=PARTNERS_DB.filter(function(s){return s.areas.some(function(a){return (data.areas||[]).indexOf(a)>=0;});}).slice(0,3);
+  document.getElementById('adminTabContent').innerHTML='<button onclick="renderAdminConsultores()" class="btn-secondary" style="margin-bottom:16px">← Volver</button><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div><div class="card"><h4 style="color:#f59e0b;margin-bottom:12px">'+(data.nombre||email)+'</h4><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Email:</b> '+email+'</p><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Tipo:</b> '+(data.tipoEntidad||'N/D')+'</p><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Inglés:</b> '+(data.english||'N/D')+'</p><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Exp:</b> '+(data.anios||0)+' años</p><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Monto:</b> USD '+(data.monto||'N/D')+'</p><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Donantes:</b> '+(data.donantes||'N/D')+'</p><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Áreas:</b> '+((data.areas||[]).join(', ')||'N/D')+'</p><p style="color:#94a3b8;font-size:.85rem"><b style="color:#f1f5f9">Capacidades:</b> '+(Object.keys(data.capacidades||{}).join(', ')||'N/D')+'</p><div style="margin-top:12px;text-align:center"><div style="font-size:2.5rem;font-weight:700;color:'+(pot>=70?'#10b981':pot>=40?'#f59e0b':'#ef4444')+'">'+pot+'%</div><div style="color:#94a3b8">Potencial de adjudicación</div></div></div><div class="card" style="margin-top:12px"><h4 style="color:#f59e0b;margin-bottom:8px">Recomendaciones</h4>'+recs.map(function(r){return '<p style="color:#94a3b8;font-size:.82rem;margin-bottom:6px">• '+r+'</p>';}).join('')+'</div></div><div><div class="card"><h4 style="color:#f59e0b;margin-bottom:8px">Top Grants</h4>'+topG.map(function(g){return '<div style="border-bottom:1px solid #1e293b;padding:8px 0"><div style="color:#f1f5f9;font-size:.85rem;font-weight:600">'+g.titulo+'</div><div style="color:#94a3b8;font-size:.78rem">'+g.donante+' · <span style="color:'+(g._score>=70?'#10b981':'#f59e0b')+'">'+g._score+'% match</span></div></div>';}).join('')+'</div><div class="card" style="margin-top:12px"><h4 style="color:#f59e0b;margin-bottom:8px">Socios Recomendados</h4>'+partners.map(function(s){return '<div style="border-bottom:1px solid #1e293b;padding:6px 0"><div style="color:#f1f5f9;font-size:.85rem">'+s.nombre+'</div><div style="color:#94a3b8;font-size:.78rem">'+s.tipo+' · '+s.depto+'</div></div>';}).join('')+'</div></div></div>';
+}
+
+function renderAdminPerfiles(){
+  var emails=getConsultorEmails();
+  var wrap=document.getElementById('adminTabContent');
+  if(!emails.length){wrap.innerHTML='<p style="color:#94a3b8">Sin consultores en este dispositivo.</p>';return;}
+  var html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">';
+  emails.forEach(function(email){
+    var data=JSON.parse(localStorage.getItem('gbp_data_'+email)||'{}');
+    var pot=calcPotencialConsultor(data);
+    var recs=generarRecomendaciones(data);
+    html+='<div class="card"><div style="text-align:center;margin-bottom:10px"><div style="font-size:2.2rem;font-weight:700;color:'+(pot>=70?'#10b981':pot>=40?'#f59e0b':'#ef4444')+'">'+pot+'%</div><div style="color:#94a3b8;font-size:.75rem">potencial</div></div><div style="color:#f1f5f9;font-weight:700;margin-bottom:4px">'+(data.nombre||email)+'</div><div style="color:#94a3b8;font-size:.78rem;margin-bottom:8px">'+email+'</div>'+recs.slice(0,3).map(function(r){return '<div style="color:#64748b;font-size:.72rem;margin-top:4px">• '+r+'</div>';}).join('')+'</div>';
+  });
+  html+='</div>';wrap.innerHTML=html;
+}
+
+function renderAdminConfig(){
+  document.getElementById('adminTabContent').innerHTML='<div class="card"><h4 style="color:#f59e0b;margin-bottom:12px">Configuración</h4><label class="field-label">Contraseña de consultores</label><div style="display:flex;gap:8px;margin-bottom:16px"><input id="cfgPass" class="field-input" type="text" placeholder="GrantsBolivia2026" style="flex:1"><button onclick="saveAdminConfig()" class="btn-primary">Guardar</button></div><label class="field-label">Cambiar contraseña Admin</label><div style="display:flex;gap:8px"><input id="cfgAdminPass" class="field-input" type="password" placeholder="Nueva contraseña admin" style="flex:1"><button onclick="saveAdminPass()" class="btn-primary">Cambiar</button></div><div style="margin-top:20px;padding:12px;background:#0f2744;border-radius:8px"><p style="color:#f59e0b;font-size:.85rem;font-weight:700">Nota cross-dispositivo</p><p style="color:#94a3b8;font-size:.8rem;margin-top:6px">Los datos se guardan en el navegador de cada consultor. Para ver perfiles de otros dispositivos, pídeles exportar desde la sección Exportar Perfil.</p></div></div>';
+}
+
+function saveAdminConfig(){var pass=document.getElementById('cfgPass').value;if(pass){localStorage.setItem('gbp_consultorPass',pass);showToast('Contraseña actualizada');}}
+function saveAdminPass(){var pass=document.getElementById('cfgAdminPass').value;if(pass&&pass.length>=6){localStorage.setItem('gbp_adminPass',pass);showToast('Contraseña admin cambiada');}else showToast('Mínimo 6 caracteres','#dc2626');}
+
+function renderAdminImport(){
+  document.getElementById('adminTabContent').innerHTML='<div class="card"><h4 style="color:#f59e0b;margin-bottom:12px">Importar Perfil de Consultor</h4><p style="color:#94a3b8;font-size:.85rem;margin-bottom:12px">Pega el código que el consultor generó desde la sección Exportar Perfil:</p><textarea id="importCode" class="field-input" rows="8" placeholder="Pega el código aquí..."></textarea><button onclick="importarPerfil()" class="btn-primary" style="margin-top:12px;width:100%">Importar y Analizar</button><div id="importResult" style="margin-top:16px"></div></div>';
+}
+
+function importarPerfil(){
+  var code=document.getElementById('importCode').value.trim();
+  if(!code){showToast('Pega el código primero','#dc2626');return;}
+  try{
+    var data=JSON.parse(decodeURIComponent(escape(atob(code))));
+    var email=data.email;var perfil=data.perfil;
+    if(!email||!perfil)throw new Error('bad');
+    localStorage.setItem('gbp_data_'+email,JSON.stringify(perfil));
+    var importUsers=JSON.parse(localStorage.getItem('gbp_users')||'[]');
+    if(Array.isArray(importUsers)&&!importUsers.find(function(u){return u.email===email;}))importUsers.push({email:email,nombre:perfil.nombre||email,org:perfil.tipoEntidad||'',rol:'consultor',fecha:new Date().toISOString().slice(0,10)});
+    localStorage.setItem('gbp_users',JSON.stringify(importUsers));
+    var pot=calcPotencialConsultor(perfil);
+    GRANTS_DB=getGrantsDB();
+    var top=GRANTS_DB.map(function(g){return Object.assign({},g,{_score:scoreGrant(g,perfil)});}).sort(function(a,b){return b._score-a._score;}).slice(0,3);
+    var recs=generarRecomendaciones(perfil);
+    document.getElementById('importResult').innerHTML='<div style="background:#0f2744;border-radius:10px;padding:16px"><p style="color:#86efac;font-weight:700;margin-bottom:12px">Perfil importado: '+(perfil.nombre||email)+'</p><p style="color:#94a3b8;font-size:.85rem">'+email+'</p><p style="color:#94a3b8;font-size:.85rem">Exp: '+(perfil.anios||0)+' años | Inglés: '+(perfil.english||'N/D')+'</p><div style="margin:12px 0;text-align:center"><div style="font-size:2rem;font-weight:700;color:'+(pot>=70?'#10b981':pot>=40?'#f59e0b':'#ef4444')+'">'+pot+'% Potencial</div></div><p style="color:#f59e0b;font-weight:600;margin-bottom:6px">Top 3 Grants:</p>'+top.map(function(g){return '<p style="color:#94a3b8;font-size:.82rem">• '+g.titulo+' — <span style="color:#10b981">'+g._score+'%</span></p>';}).join('')+'<p style="color:#f59e0b;font-weight:600;margin:10px 0 6px">Recomendaciones:</p>'+recs.map(function(r){return '<p style="color:#94a3b8;font-size:.82rem">• '+r+'</p>';}).join('')+'</div>';
+  }catch(e){document.getElementById('importResult').innerHTML='<p style="color:#ef4444">Código inválido.</p>';}
+}
+
+function exportUsersCSV(){
+  var emails=getConsultorEmails();
+  var csv='Email,Nombre,Tipo,Años,Inglés,Monto,Donantes,Áreas,Potencial%\n';
+  emails.forEach(function(email){var d=JSON.parse(localStorage.getItem('gbp_data_'+email)||'{}');var pot=calcPotencialConsultor(d);csv+='"'+email+'","'+(d.nombre||'')+'","'+(d.tipoEntidad||'')+'","'+(d.anios||0)+'","'+(d.english||'')+'","'+(d.monto||'')+'","'+(d.donantes||'')+'","'+((d.areas||[]).join('|'))+'","'+pot+'"\n';});
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='consultores_grantsbolivia.csv';a.click();URL.revokeObjectURL(url);
+  showToast('CSV exportado');
+}
+
+function exportUsersWord(){
+  var emails=getConsultorEmails();
+  GRANTS_DB=getGrantsDB();
+  var doc='REPORTE DE CONSULTORES — GrantsBolivia Pro\n'+'='.repeat(60)+'\nFecha: '+new Date().toLocaleDateString('es-ES')+'\nTotal: '+emails.length+' consultores\n\n';
+  emails.forEach(function(email,i){
+    var d=JSON.parse(localStorage.getItem('gbp_data_'+email)||'{}');
+    var pot=calcPotencialConsultor(d);
+    var top=GRANTS_DB.map(function(g){return Object.assign({},g,{_score:scoreGrant(g,d)});}).sort(function(a,b){return b._score-a._score;}).slice(0,3);
+    doc+=(i+1)+'. '+(d.nombre||email)+'\n'+'-'.repeat(40)+'\nEmail: '+email+'\nTipo: '+(d.tipoEntidad||'N/D')+' | Depto: '+(d.ubicacion||'N/D')+'\nExp: '+(d.anios||0)+' años | Inglés: '+(d.english||'N/D')+'\nMonto: USD '+(d.monto||'N/D')+'\nDonantes: '+(d.donantes||'N/D')+'\nÁreas: '+((d.areas||[]).join(', ')||'N/D')+'\nPotencial: '+pot+'%\nTop grants: '+top.map(function(g){return g.titulo+' ('+g._score+'%)';}).join(', ')+'\n\n';
+  });
+  var blob=new Blob([doc],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='reporte_consultores.txt';a.click();URL.revokeObjectURL(url);
+  showToast('Reporte exportado');
+}
+
+function showToast(msg,bg){
+  bg=bg||'#10b981';
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;right:24px;background:'+bg+';color:#fff;padding:12px 20px;border-radius:8px;font-weight:600;z-index:9999;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.3)';
+  t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);
+}
+
+function doLogout(){
+  sessionStorage.removeItem('gbp_session');
+  currentUser=null;currentProfile=null;savedGrants=[];
+  document.getElementById('mainApp').style.display='none';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('gateContainer').style.display='flex';
+  showToast('Sesión cerrada');
+}
+
+(function initOnLoad(){
+  var sess=sessionStorage.getItem('gbp_session');if(!sess)return;
+  try{var s=JSON.parse(sess);if(s.expires&&new Date(s.expires)<new Date()){sessionStorage.removeItem('gbp_session');return;}if(s.email&&s.rol)initializeUserSession(s.email,s.rol);}catch(e){}
+})();
+</script>
+
+
+</body>
+</html>
