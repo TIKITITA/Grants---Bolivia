@@ -132,8 +132,46 @@ select.field-input option{background:#0f172a}
 .admin-tab-btn{padding:10px 18px;background:none;border:none;color:#94a3b8;cursor:pointer;font-size:.9rem;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
 .admin-tab-btn.active{color:#f59e0b;border-bottom-color:#f59e0b}
 @media(max-width:768px){
-  #sidebar{transform:translateX(-220px)!important}
-  #mainContent{margin-left:0!important}
+  /* Sidebar: oculto por defecto, aparece como panel encima del contenido */
+  #sidebar{transform:translateX(-220px)!important;z-index:150!important;box-shadow:4px 0 20px rgba(0,0,0,.5)!important}
+  #mainContent{margin-left:0!important;padding:14px!important}
+  /* Topbar: ocultar email en pantalla pequeña */
+  #topbarUser{display:none!important}
+  /* Perfil: columnas apiladas */
+  #perfilGrid{grid-template-columns:1fr!important}
+  /* Gate box en móvil */
+  .gate-box{padding:24px 16px!important;margin:12px!important;border-radius:14px!important}
+  /* Admin panel */
+  .admin-box{padding:16px!important;width:96%!important;border-radius:12px!important}
+  .admin-tab-btn{font-size:.78rem!important;padding:8px 10px!important;white-space:nowrap}
+  /* Modals */
+  .modal{width:96%!important;padding:16px!important;border-radius:12px!important}
+  /* Grant cards */
+  .grant-header{flex-direction:column!important;gap:6px!important}
+  .grant-amount{font-size:.9rem!important}
+  .grant-footer{flex-direction:column!important;align-items:flex-start!important}
+  /* Section headers */
+  .section-header{flex-direction:column!important;align-items:flex-start!important;gap:8px!important}
+  /* Barra de búsqueda */
+  .search-bar{flex-direction:column!important}
+  .search-bar input{min-width:unset!important;width:100%!important}
+  /* Tabs con scroll horizontal */
+  .tabs{overflow-x:auto!important;flex-wrap:nowrap!important;-webkit-overflow-scrolling:touch}
+  /* Ranking */
+  .brecha-label{width:100px!important;font-size:.73rem!important}
+  /* Dashboard stats: 2 columnas en móvil */
+  #dashStats{grid-template-columns:repeat(2,1fr)!important}
+  /* Botones apilados */
+  .btn-row{flex-direction:column!important}
+  .btn-row .btn,.btn-row button{width:100%!important;justify-content:center!important}
+  /* Form grids en vistas de contenido */
+  .form-grid,.form-grid.cols3{grid-template-columns:1fr!important}
+  /* Rank item en móvil */
+  .rank-item{flex-direction:column!important;gap:10px!important}
+  /* Socios */
+  .partner-card{flex-direction:column!important}
+  /* Scroll horizontal en tabla admin */
+  .admin-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 }
 </style>
 </head>
@@ -267,6 +305,9 @@ select.field-input option{background:#0f172a}
     </nav>
   </div>
 
+  <!-- OVERLAY para cerrar sidebar en móvil -->
+  <div id="sidebarOverlay" onclick="closeSidebarMobile()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:140"></div>
+
   <!-- MAIN CONTENT AREA -->
   <div id="mainContent" style="margin-left:220px;margin-top:56px;padding:28px;min-height:calc(100vh - 56px);background:#0f172a;transition:margin .25s">
 
@@ -281,7 +322,7 @@ select.field-input option{background:#0f172a}
     <!-- VIEW: PERFIL -->
     <div id="view-perfil" class="view-section" style="display:none">
       <h2 style="color:#f1f5f9;margin-bottom:20px">👤 Mi Perfil & CV</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div id="perfilGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
         <div>
           <div class="card">
             <h3 class="card-title">Datos Básicos</h3>
@@ -320,8 +361,13 @@ select.field-input option{background:#0f172a}
         </div>
         <div>
           <div class="card">
-            <h3 class="card-title">Subir CV (texto)</h3>
-            <textarea id="pCV" class="field-input" rows="10" placeholder="Pega aquí tu CV completo..."></textarea>
+            <h3 class="card-title">Subir CV</h3>
+            <label for="cvFileInput" style="display:block;background:#1e3a5f;color:#93c5fd;border:2px dashed #3b82f6;border-radius:8px;padding:14px;text-align:center;cursor:pointer;font-size:.9rem;margin-bottom:8px" onmouseover="this.style.borderColor='#60a5fa'" onmouseout="this.style.borderColor='#3b82f6'">
+              📎 Subir CV en Word (.docx) o PDF — el texto se extrae automáticamente
+            </label>
+            <input id="cvFileInput" type="file" accept=".docx,.pdf" style="display:none" onchange="extraerTextoCV(this)">
+            <div id="cvFileStatus" style="color:#94a3b8;font-size:.82rem;margin-bottom:8px;min-height:18px;text-align:center"></div>
+            <textarea id="pCV" class="field-input" rows="8" placeholder="O pega aquí tu CV completo..."></textarea>
             <button onclick="analizarCV()" class="btn-primary" style="width:100%;margin-top:10px">🤖 Analizar CV con IA</button>
             <div id="cvAnalisisResult" style="margin-top:12px"></div>
           </div>
@@ -2325,6 +2371,8 @@ function initializeUserSession(email,rol){
     document.getElementById('sidebar').style.display='none';
     renderAdminTab('consultores');
   } else {
+    document.getElementById('mainContent').style.display='block';
+    document.getElementById('sidebar').style.display='block';
     loadUserProfile(email);
     buildAreaChecks();
     renderDashboard();
@@ -2652,14 +2700,57 @@ function showView(name){
   if(name==='perfil'){buildAreaChecks();cargarFormularioPerfil();}
   if(name==='exportar')poblarExportSelect();
   if(name==='dashboard')renderDashboard();
+  // En móvil, cerrar sidebar al navegar
+  if(window.innerWidth<=768)closeSidebarMobile();
 }
 
 function toggleSidebar(){
-  sidebarOpen=!sidebarOpen;
-  var sb=document.getElementById('sidebar');var mc=document.getElementById('mainContent');
-  if(sidebarOpen){sb.style.transform='translateX(0)';mc.style.marginLeft='220px';}
-  else{sb.style.transform='translateX(-220px)';mc.style.marginLeft='0';}
+  var isMobile=window.innerWidth<=768;
+  var sb=document.getElementById('sidebar');
+  var mc=document.getElementById('mainContent');
+  var ov=document.getElementById('sidebarOverlay');
+  if(isMobile){
+    var isOpen=(sb.style.transform==='translateX(0px)'||sb.style.transform==='translateX(0)');
+    if(isOpen){
+      sb.style.transform='translateX(-220px)';
+      if(ov)ov.style.display='none';
+      sidebarOpen=false;
+    } else {
+      sb.style.transform='translateX(0)';
+      if(ov)ov.style.display='block';
+      sidebarOpen=true;
+    }
+  } else {
+    sidebarOpen=!sidebarOpen;
+    if(sidebarOpen){sb.style.transform='translateX(0)';mc.style.marginLeft='220px';}
+    else{sb.style.transform='translateX(-220px)';mc.style.marginLeft='0';}
+  }
 }
+function closeSidebarMobile(){
+  var sb=document.getElementById('sidebar');
+  var ov=document.getElementById('sidebarOverlay');
+  if(sb)sb.style.transform='translateX(-220px)';
+  if(ov)ov.style.display='none';
+  sidebarOpen=false;
+}
+// Al cambiar tamaño de ventana, resetear estado del sidebar
+window.addEventListener('resize',function(){
+  var sb=document.getElementById('sidebar');
+  var mc=document.getElementById('mainContent');
+  var ov=document.getElementById('sidebarOverlay');
+  if(!sb||!mc)return;
+  if(window.innerWidth>768){
+    sb.style.transform='translateX(0)';
+    mc.style.marginLeft='220px';
+    if(ov)ov.style.display='none';
+    sidebarOpen=true;
+  } else {
+    if(sidebarOpen&&ov&&ov.style.display!=='block'){
+      sb.style.transform='translateX(-220px)';
+      sidebarOpen=false;
+    }
+  }
+});
 
 // ADMIN GRANT MANAGEMENT
 function renderAdminGrants(){
@@ -2823,6 +2914,75 @@ function doLogout(){
   var sess=sessionStorage.getItem('gbp_session');if(!sess)return;
   try{var s=JSON.parse(sess);if(s.expires&&new Date(s.expires)<new Date()){sessionStorage.removeItem('gbp_session');return;}if(s.email&&s.rol)initializeUserSession(s.email,s.rol);}catch(e){}
 })();
+
+function extraerTextoCV(input){
+  var file=input.files[0];if(!file)return;
+  var status=document.getElementById('cvFileStatus');
+  var ext=file.name.split('.').pop().toLowerCase();
+  status.style.color='#f59e0b';
+  status.textContent='Extrayendo texto de '+file.name+'...';
+  if(ext==='docx'){
+    if(typeof mammoth==='undefined'){
+      var s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+      s.onload=function(){extraerDocx(file,status);};
+      s.onerror=function(){status.style.color='#dc2626';status.textContent='Error cargando mammoth.js';};
+      document.head.appendChild(s);
+    }else{extraerDocx(file,status);}
+  }else if(ext==='pdf'){
+    if(typeof pdfjsLib==='undefined'){
+      var s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      s.onload=function(){
+        pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        extraerPdf(file,status);
+      };
+      s.onerror=function(){status.style.color='#dc2626';status.textContent='Error cargando PDF.js';};
+      document.head.appendChild(s);
+    }else{extraerPdf(file,status);}
+  }else{
+    status.style.color='#dc2626';
+    status.textContent='Solo se aceptan archivos .docx o .pdf';
+  }
+}
+
+function extraerDocx(file,status){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    mammoth.extractRawText({arrayBuffer:e.target.result})
+      .then(function(result){
+        document.getElementById('pCV').value=result.value;
+        status.style.color='#10b981';
+        status.textContent='✅ Texto extraído de '+file.name+' ('+Math.round(file.size/1024)+'KB)';
+      })
+      .catch(function(err){status.style.color='#dc2626';status.textContent='Error: '+err.message;});
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function extraerPdf(file,status){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var typedarray=new Uint8Array(e.target.result);
+    pdfjsLib.getDocument(typedarray).promise.then(function(pdf){
+      var pagePromises=[];
+      for(var i=1;i<=pdf.numPages;i++){
+        pagePromises.push(pdf.getPage(i).then(function(page){
+          return page.getTextContent().then(function(tc){
+            return tc.items.map(function(item){return item.str;}).join(' ');
+          });
+        }));
+      }
+      Promise.all(pagePromises).then(function(texts){
+        document.getElementById('pCV').value=texts.join('\n\n');
+        status.style.color='#10b981';
+        status.textContent='✅ Texto extraído: '+pdf.numPages+' página(s) de '+file.name;
+      });
+    }).catch(function(err){status.style.color='#dc2626';status.textContent='Error PDF: '+err.message;});
+  };
+  reader.readAsArrayBuffer(file);
+}
+
 </script>
 
 
